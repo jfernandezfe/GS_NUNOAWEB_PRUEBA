@@ -14,14 +14,27 @@ var map = new ol.Map({
 
 });
 
+var noneTile = new ol.layer.Tile({
+    title: 'none',
+    type: 'base',
+    visible: false 
+})
+
 //asignando por defecto la plantilla de Open Street Map...
 var osmTile = new ol.layer.Tile ({
     title: 'Open Street Map',
+    type: 'base',
     visible: true,
     source: new ol.source.OSM()
 });
 
-map.addLayer(osmTile);
+//map.addLayer(osmTile);
+var baseGroup = new ol.layer.Group({
+    title:'Base Maps',
+    fold: true,
+    layers: [osmTile, noneTile]
+});
+map.addLayer(baseGroup);
 
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 
@@ -35,7 +48,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
         visible: true
     })
 });
-map.addLayer(AVANCE_MUESTREOTile);
+//map.addLayer(AVANCE_MUESTREOTile);
 
 //Capa de buffer de la semana 26...
 var BUFFERS26Tile = new ol.layer.Tile({
@@ -47,11 +60,20 @@ var BUFFERS26Tile = new ol.layer.Tile({
         visible: true
     })
 });
-map.addLayer(BUFFERS26Tile);
+//map.addLayer(BUFFERS26Tile);
+
+//Creando grupos de layers para panel layerswitcher 
+var overlayGroup = new ol.layer.Group({
+    title:'Overlays',
+    fold: true,
+    layers: [AVANCE_MUESTREOTile,BUFFERS26Tile]
+});
+map.addLayer(overlayGroup);
+
+
 
 
 //Añadiendo Conmutador de capas:
-
 var layerSwitcher = new ol.control.LayerSwitcher({
     activationMode: 'click',
     startActive: false,
@@ -60,6 +82,12 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 
 map.addControl(layerSwitcher); 
 
+
+var mousePosition = new ol.control.mousePosition({
+    projection: 'EPSG:4326',
+    coordinateFormat: function(coordinate){return ol.coordinate.format(coordinate,'{y} , {x}',6);}
+});
+map.addControl(mousePosition); 
 
 
 
