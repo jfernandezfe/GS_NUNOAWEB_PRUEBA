@@ -1,6 +1,10 @@
+
+// Con este codigo redireccionamos la posición geográfica de nuestro mapa, el cual está
+// ubicado en en la ciudad de santiago de chile, cordenadas: -70.6483, -33.4489
+
 var mapView = new ol.View({
-    center: ol.proj.fromLonLat([72.585717, 23.0212450]),
-    zoom: 8,
+    center: ol.proj.fromLonLat([-70.6483, -33.4489]),
+    zoom: 12,
 });
 
 
@@ -22,9 +26,9 @@ map.addLayer(osmTile);
 var SantiagoSTTile = new ol.layer.Tile({
     title: "Santiago States",
     source: new ol.source.TileWMS({
-        URL: 'http://localhost:8080/geoserver/cartosagdemo/wms',
+        url: 'http://localhost:8080/geoserver/cartosagdemo/wms',
         params: {'LAYERS': 'cartosagdemo:AVANCE_MUESTREO', 'TILED': true},
-        serverType: 'geoserver',
+        serverType: 'tile',
         visible: true
     })
 });
