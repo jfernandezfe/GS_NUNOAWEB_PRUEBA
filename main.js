@@ -3,8 +3,8 @@
 // ubicado en en la ciudad de santiago de chile, cordenadas: -70.6483, -33.4489
 
 var mapView = new ol.View({
-    center: ol.proj.fromLonLat([-70.6483, -33.4489]),
-    zoom: 12,
+    center: ol.proj.fromLonLat([-70.585518,-33.444829]),
+    zoom: 14,
 });
 
 
@@ -23,18 +23,43 @@ var osmTile = new ol.layer.Tile ({
 
 map.addLayer(osmTile);
 
-var SantiagoSTTile = new ol.layer.Tile({
-    title: "Santiago States",
+//Asignamos layers subidos a nuestro GeoServer a través de su url...
+
+//Capa de avance de muestreo
+var AVANCE_MUESTREOTile = new ol.layer.Tile({
+    title: "Ñuñoa Manzanas",
     source: new ol.source.TileWMS({
-        url: 'http://localhost:8080/geoserver/cartosagdemo/wms',
-        params: {'LAYERS': 'cartosagdemo:AVANCE_MUESTREO', 'TILED': true},
+        url: 'http://localhost:8080/geoserver/cartosagñuñoa/wms',
+        params: {'LAYERS': 'cartosagñuñoa:AVANCE_MUESTREO', 'TILED': true},
         serverType: 'tile',
         visible: true
     })
 });
+map.addLayer(AVANCE_MUESTREOTile);
+
+//Capa de buffer de la semana 26...
+var BUFFERS26Tile = new ol.layer.Tile({
+    title: "Capturas",
+    source: new ol.source.TileWMS({
+        url: 'http://localhost:8080/geoserver/cartosagñuñoa/wms',
+        params: {'LAYERS': 'cartosagñuñoa:BUFFER S26', 'TILED': true},
+        serverType: 'tile',
+        visible: true
+    })
+});
+map.addLayer(BUFFERS26Tile);
 
 
-map.addLayer(SantiagoSTTile);
+//Añadiendo Conmutador de capas:
+
+var layerSwitcher = new ol.control.LayerSwitcher({
+    activationMode: 'click',
+    startActive: false,
+    groupSelectedStyle: 'children'
+});
+
+map.addControl(layerSwitcher); 
+
 
 
 
