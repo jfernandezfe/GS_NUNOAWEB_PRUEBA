@@ -44,7 +44,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
     source: new ol.source.TileWMS({
         url: 'http://localhost:8080/geoserver/cartosagñuñoa/wms',
         params: {'LAYERS': 'cartosagñuñoa:AVANCE_MUESTREO', 'TILED': true},
-        serverType: 'tile',
+        serverType: 'geoserver',
         visible: true
     })
 });
@@ -56,7 +56,7 @@ var BUFFERS26Tile = new ol.layer.Tile({
     source: new ol.source.TileWMS({
         url: 'http://localhost:8080/geoserver/cartosagñuñoa/wms',
         params: {'LAYERS': 'cartosagñuñoa:BUFFER S26', 'TILED': true},
-        serverType: 'tile',
+        serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
         visible: true
     })
 });
