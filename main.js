@@ -101,7 +101,7 @@ map.on('pointermove', function(event) {
     var coordinates = ol.proj.toLonLat(event.coordinate, 'EPSG:4326');
     var lon = coordinates[0].toFixed(6);
     var lat = coordinates[1].toFixed(6);
-    coordinatesElement.innerHTML = 'Lat(Y): ' + lat + ' | Lon(X): ' + lon;
+    coordinatesElement.innerHTML = 'Lat(Y):' + lat + '||Lon(X):' + lon;
 });
 
 
