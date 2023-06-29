@@ -16,3 +16,34 @@ body{
     bottom:0;
     right: 0;
 }
+
+/* Metodo del tutorial: */
+/* .mousePosition{
+    position: absolute;
+    top: auto;
+    right: auto;
+    /* bottom: 5px; 
+    padding: 5px; 
+    left: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    transform: translateX(-50%);
+} */
+
+/* Metodo alternatio de despliegue de coordenadas */
+.mouse-coordinates {
+    position: absolute;
+    top: auto;
+    right: auto;
+    /* padding: 5px;  */
+    bottom: 5px;
+    left: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    transform: translateX(-50%);
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+}

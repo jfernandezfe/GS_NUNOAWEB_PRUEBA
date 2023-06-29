@@ -15,16 +15,16 @@ var map = new ol.Map({
 });
 
 var noneTile = new ol.layer.Tile({
-    title: 'none',
+    title: 'None',
     type: 'base',
     visible: false 
-})
+});
 
 //asignando por defecto la plantilla de Open Street Map...
 var osmTile = new ol.layer.Tile ({
     title: 'Open Street Map',
-    type: 'base',
     visible: true,
+    type: 'base',
     source: new ol.source.OSM()
 });
 
@@ -36,8 +36,9 @@ var baseGroup = new ol.layer.Group({
 });
 map.addLayer(baseGroup);
 
-//Asignamos layers subidos a nuestro GeoServer a través de su url...
 
+
+//Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
     title: "Ñuñoa Manzanas",
@@ -47,6 +48,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
         serverType: 'geoserver',
         visible: true
     })
+    
 });
 //map.addLayer(AVANCE_MUESTREOTile);
 
@@ -69,7 +71,7 @@ var overlayGroup = new ol.layer.Group({
     layers: [AVANCE_MUESTREOTile,BUFFERS26Tile]
 });
 map.addLayer(overlayGroup);
-
+ 
 
 
 
@@ -82,12 +84,25 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 
 map.addControl(layerSwitcher); 
 
+//Metodo de despliegue de coordenadas del tutorial:
+// var mousePosition = new ol.control.mousePosition({
+//     className: 'mousePosition',
+//     projection: 'EPSG:4326',
+//     coordinateFormat: function(coordinate){return ol.coordinate.format(coordinate,'{y} , {x}',6);}
+// });
+// map.addControl(mousePosition); 
 
-var mousePosition = new ol.control.mousePosition({
-    projection: 'EPSG:4326',
-    coordinateFormat: function(coordinate){return ol.coordinate.format(coordinate,'{y} , {x}',6);}
+//Metodo alternativo de despliegue de coordenadas hecho por chat gpt:
+var coordinatesElement = document.createElement('div');
+coordinatesElement.className = 'mouse-coordinates';
+document.body.appendChild(coordinatesElement);
+
+map.on('pointermove', function(event) {
+    var coordinates = ol.proj.toLonLat(event.coordinate, 'EPSG:4326');
+    var lon = coordinates[0].toFixed(6);
+    var lat = coordinates[1].toFixed(6);
+    coordinatesElement.innerHTML = 'Lat(Y): ' + lat + ' | Lon(X): ' + lon;
 });
-map.addControl(mousePosition); 
 
 
 
