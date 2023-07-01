@@ -44,7 +44,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
     title: "Ñuñoa Manzanas",
     source: new ol.source.TileWMS({
         url: 'http://localhost:8080/geoserver/cartosagnunoa/wms',
-        fetch: ('http://localhost:8080/geoserver/cartosagnunoa/wms',{mode:'cors'}),
+        fetch: ('https://localhost:8080/geoserver/cartosagnunoa/wms',{mode:'cors'}),
         params: {'LAYERS': 'cartosagnunoa:AVANCE_MUESTREO', 'TILED': true},
         serverType: 'geoserver',
         visible: true
