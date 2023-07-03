@@ -37,15 +37,15 @@ var baseGroup = new ol.layer.Group({
 map.addLayer(baseGroup);
 
 
-
+//OBSERVACIÓN: SE HA CAMBIA EL SERVIDOR DE GEOSERVER A SU VERSION 2.19 PARA QUE SEA COMPATIBLE CON EL SERVIDOR DE APACHE TOMCAT
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
     title: "Ñuñoa Manzanas",
     source: new ol.source.TileWMS({
-        url: 'http://localhost:8080/geoserver/cartosagnunoa/wms',
-        fetch: ('http://localhost:8080/geoserver/cartosagnunoa/wms',{mode:'cors'}),
-        params: {'LAYERS': 'cartosagnunoa:AVANCE_MUESTREO', 'TILED': true},
+        url: 'http://localhost:8085/geoserver/cartosag/wms',
+        // fetch: ('http://localhost:8085/geoserver/cartosagnunoa/wms',{mode:'cors'}),
+        params: {'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true},
         serverType: 'geoserver',
         visible: true
     })
@@ -57,8 +57,8 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
 var BUFFERS26Tile = new ol.layer.Tile({
     title: "Capturas",
     source: new ol.source.TileWMS({
-        url: 'http://localhost:8080/geoserver/cartosagnunoa/wms',
-        params: {'LAYERS': 'cartosagnunoa:BUFFER S26', 'TILED': true},
+        url: 'http://localhost:8085/geoserver/cartosag/wms',
+        params: {'LAYERS': 'cartosag:BUFFER S26', 'TILED': true},
         serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
         visible: true
     })
