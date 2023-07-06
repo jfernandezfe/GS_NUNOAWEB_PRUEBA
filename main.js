@@ -43,7 +43,7 @@ map.addLayer(baseGroup);
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
     title: "Ñuñoa Manzanas",
     source: new ol.source.TileWMS({
-        url: 'http://localhost:8085/geoserver/cartosag/wms',
+        url: 'http://localhost:8080/geoserver/cartosag/wms',
         // fetch: ('http://localhost:8085/geoserver/cartosagnunoa/wms',{mode:'cors'}),
         params: {'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true},
         serverType: 'geoserver',
@@ -57,7 +57,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
 var BUFFERS26Tile = new ol.layer.Tile({
     title: "Capturas",
     source: new ol.source.TileWMS({
-        url: 'http://localhost:8085/geoserver/cartosag/wms',
+        url: 'http://localhost:8080/geoserver/cartosag/wms',
         params: {'LAYERS': 'cartosag:BUFFER S26', 'TILED': true},
         serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
         visible: true
