@@ -3,11 +3,14 @@
     margin: 0;
     padding:0;
 }
-body{
-    margin: 0;
+html, body{
+    height: 100%;
     padding: 0;
-    overflow: hidden;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
+
 
 #map{
     position: fixed;
@@ -47,3 +50,109 @@ body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 12px;
 }
+
+/*----------------------------------------------------------------------------------------------------
+    Creando popups para despliegue de información de capas...
+----------------------------------------------------------------------------------------------------*/
+
+.ol-popup{
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+}
+
+.ol-popup:after, .ol-popup:before{
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+
+}
+
+.ol-popup:after{
+    border-top-color:white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;    
+}
+
+.ol-popup:before{
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+
+.ol-popup-closer{
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+
+.ol-popup-closer:after{
+    content: "x";
+}
+/*Animaciones de texto----------------------------------------------------------------------------------*/
+.text-animation {
+    position: relative;
+    animation: fading 8s ease-in-out;
+}
+
+@keyframes fading {
+    0% {
+      opacity: 0;
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0);
+    }
+}
+
+/* Creando una ventana emergente con mensaje para el usuario...*/
+.popup, .welcome-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffffc9;
+    width: 300px;
+    padding: 20px;
+    border: 3px solid #000000cc;
+    text-align: center;
+    animation: fading 1s ease-in-out;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.781); /* Agrega el efecto de sombra */
+}
+
+
+.popup p, .welcome-popup p {
+    margin-bottom: 20px;
+}
+
+
+.popup button.accept-button, .welcome-popup button.accept-button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+.popup button.skip-button {
+    padding: 10px 20px;
+    background-color: #cccccc;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+} 

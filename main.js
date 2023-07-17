@@ -4,7 +4,7 @@
 
 var mapView = new ol.View({
     center: ol.proj.fromLonLat([-70.585518,-33.444829]),
-    zoom: 14,
+    zoom: 17,
 });
 
 
@@ -44,7 +44,6 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
     title: "Ñuñoa Manzanas",
     source: new ol.source.TileWMS({
         url: 'http://localhost:8080/geoserver/cartosag/wms',
-        // fetch: ('http://localhost:8085/geoserver/cartosagnunoa/wms',{mode:'cors'}),
         params: {'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true},
         serverType: 'geoserver',
         visible: true
@@ -93,7 +92,11 @@ map.addControl(layerSwitcher);
 // });
 // map.addControl(mousePosition); 
 
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 //Metodo alternativo de despliegue de coordenadas hecho por chat gpt:
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
 var coordinatesElement = document.createElement('div');
 coordinatesElement.className = 'mouse-coordinates';
 document.body.appendChild(coordinatesElement);
@@ -104,6 +107,168 @@ map.on('pointermove', function(event) {
     var lat = coordinates[1].toFixed(6);
     coordinatesElement.innerHTML = 'Lat(Y):' + lat + '||Lon(X):' + lon;
 });
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//Añadiendo cmedidor de escala del mapa:
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+var scaleControl = new ol.control.ScaleLine({
+
+    bar: true,
+    text: true
+
+});
+
+map.addControl(scaleControl);
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//Creando variables para despliegue de ventanas de bienvenida para el usuario...
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+window.addEventListener('DOMContentLoaded', function() {
+    var popup = document.querySelector('.popup');
+    var acceptButton = document.querySelector('.popup .accept-button');
+    var skipButton = document.querySelector('.popup .skip-button');
+    var welcomePopup = document.querySelector('.welcome-popup');
+    var welcomeAcceptButton = document.querySelector('.welcome-popup .accept-button');
+  
+    acceptButton.addEventListener('click', function() {
+      // Redirigir al navegador de Microsoft Edge
+      window.location.href = 'microsoft-edge:https://sagcartogob2023.netlify.app/'; // Cambia esta URL por la que desees abrir en Microsoft Edge
+    });
+  
+    skipButton.addEventListener('click', function() {
+      popup.style.display = 'none';
+      welcomePopup.style.display = 'block';
+    });
+  
+    welcomeAcceptButton.addEventListener('click', function() {
+      welcomePopup.style.display = 'none';
+    });
+  
+    popup.style.display = 'block';
+});
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+//manipulando popups para despliegue de información de las capas----------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
+
+// var container = document.getElementById('popup');
+// var content = document.getElementById('popup-content');
+// var closer = document.getElementById('popup-closer');
+
+// var popup = new ol.Overlay({
+    
+//     element: container,
+//     autoPan: true,
+//     autoPanAnimation: {
+
+//         duration: 250,
+
+//     },
+// });
+// map.addOverlay(popup);
+
+// closer.onclick = function(){
+//     popup.setPosition(undefined);
+//     closer.blur();
+//     return false; 
+// };
+
+// map.on('singleclick', function(evt){
+//     content.innerHTML = '';
+//     var resolution = mapView.getResolution();
+
+//     var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(evt.coordinate, resolution, 'EPSG:3857', {
+//         'INFO_FORMAT': 'application/json',
+//         'propertyName': 'fid,area,grilla,sector,id_manza,porc_avan,inter_avan'
+//     });
+
+//     //pendiente....
+//     if(url){
+//         $.getJSON(url, function(data){
+//             var feature = data.features[0];
+//             var props = feature.properties;
+//             // content.innerHTML = "<h3> Id: </h3><p>" + props.id + "</p>";
+//             content.innerHTML = "<h3> Fid : </h3> <p>"+ props.fid + '</p>'+
+//                                 "<h3> Area: </h3> <p>" + props.area + '</p>'+
+//                                 "<h3> Grilla : </h3> <p>" + props.grilla + '</p>'+
+//                                 "<h3> Sector : </h3> <p>" + props.sector.ToLowerCase() + '</p>'+
+//                                 "<h3> Id manzana : </h3> <p>" + props.id_manza + '</p>'+
+//                                 "<h3> Porcentaje avance : </h3> <p>" + props.porc_avan + '</p>'+
+//                                 "<h3> Intervalo : </h3> <p>" + props.inter_avan + "</p>";
+//             popup.setPosition(evt.coordinate);
+//         })
+//     } else{
+//         popup.setPosition(undefined);
+//     }
+// });
+
+
+//---------------------------------------------------------------------------------------------------
+//version de chat gpt: 
+
+
+var container = document.getElementById('popup');
+var content = document.getElementById('popup-content');
+var closer = document.getElementById('popup-closer');
+
+var popup = new ol.Overlay({
+  element: container,
+  autoPan: true,
+  autoPanAnimation: {
+    duration: 250
+  }
+});
+map.addOverlay(popup);
+
+closer.onclick = function() {
+  popup.setPosition(undefined);
+  closer.blur();
+  return false;
+};
+
+map.on('singleclick', function(evt) {
+  content.innerHTML = '';
+  var resolution = map.getView().getResolution();
+
+  var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
+    evt.coordinate,
+    resolution,
+    map.getView().getProjection().getCode(),
+    {
+      'INFO_FORMAT': 'application/json',
+      'propertyName': 'area,grilla,sector,id_manza,porc_avan,inter_avan'
+    }
+  );
+
+  if (url) {
+    $.getJSON(url, function(data) {
+      var feature = data.features[0];
+      if (feature) {
+        var props = feature.properties;
+        content.innerHTML =
+          '<h3>Área: </h3><p>' + props.area + '</p>' +
+          '<h3>Grilla: </h3><p>' + props.grilla + '</p>' +
+          '<h3>Sector: </h3><p>' + props.sector + '</p>' +
+          '<h3>ID Manza: </h3><p>' + props.id_manza + '</p>'+
+          '<h3>Porcentaje Avance: </h3><p>' + props.porc_avan + '</p>'+
+          '<h3>Intervalo: </h3><p>' + props.inter_avan + '</p>';
+        popup.setPosition(evt.coordinate);
+      }
+    });
+  } else {
+    popup.setPosition(undefined);
+  }
+});
+
+
+
+ 
+
+
+
+
 
 
 
