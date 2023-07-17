@@ -258,10 +258,13 @@ map.on('singleclick', function(evt) {
               '</table>';
             content.innerHTML = tableHTML;
             popup.setPosition(evt.coordinate);
+            container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
           }
         });
       } else {
         popup.setPosition(undefined);
+        container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
       }
 
 });

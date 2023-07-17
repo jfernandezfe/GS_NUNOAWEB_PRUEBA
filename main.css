@@ -65,7 +65,14 @@ html, body{
     left: -50px;
     min-width: 260px;
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.781); /* Agrega el efecto de sombra */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
     
+}
+
+/* Estilos para el popup cuando está visible (PONER OJO EN ESTE CODIGO, FUNCIONA PERO SOLO LA PRIMERA VEZ*/
+.ol-popup.visible {
+    opacity: 1;
 }
 
 .ol-popup:after, .ol-popup:before{
@@ -76,6 +83,7 @@ html, body{
     width: 0;
     position: absolute;
     pointer-events: none;
+    
     
 }
 
