@@ -204,7 +204,6 @@ window.addEventListener('DOMContentLoaded', function() {
 //     }
 // });
 
-
 //---------------------------------------------------------------------------------------------------
 //version de chat gpt: 
 
@@ -242,24 +241,29 @@ map.on('singleclick', function(evt) {
     }
   );
 
-  if (url) {
-    $.getJSON(url, function(data) {
-      var feature = data.features[0];
-      if (feature) {
-        var props = feature.properties;
-        content.innerHTML =
-          '<h3>Área: </h3><p>' + props.area + '</p>' +
-          '<h3>Grilla: </h3><p>' + props.grilla + '</p>' +
-          '<h3>Sector: </h3><p>' + props.sector + '</p>' +
-          '<h3>ID Manza: </h3><p>' + props.id_manza + '</p>'+
-          '<h3>Porcentaje Avance: </h3><p>' + props.porc_avan + '</p>'+
-          '<h3>Intervalo: </h3><p>' + props.inter_avan + '</p>';
-        popup.setPosition(evt.coordinate);
+    //colocando campos en una tabla:
+    if (url) {
+        $.getJSON(url, function(data) {
+          var feature = data.features[0];
+          if (feature) {
+            var props = feature.properties;
+            var tableHTML =
+              '<table class="popup-table">' +
+              '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
+              '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
+              '<tr><th>Sector </th><td>' + props.sector + '</td></tr>' +
+              '<tr><th>ID Manza </th><td>' + props.id_manza + '</td></tr>' +
+              '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '%</td></tr>' +
+              '<tr><th>Intervalo </th><td>' + props.inter_avan + '</td></tr>' +
+              '</table>';
+            content.innerHTML = tableHTML;
+            popup.setPosition(evt.coordinate);
+          }
+        });
+      } else {
+        popup.setPosition(undefined);
       }
-    });
-  } else {
-    popup.setPosition(undefined);
-  }
+
 });
 
 

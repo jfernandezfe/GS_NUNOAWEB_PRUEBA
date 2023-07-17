@@ -58,13 +58,14 @@ html, body{
 .ol-popup{
     position: absolute;
     background-color: white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     padding: 15px;
     border-radius: 10px;
     border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px;
-    min-width: 280px;
+    min-width: 260px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.781); /* Agrega el efecto de sombra */
+    
 }
 
 .ol-popup:after, .ol-popup:before{
@@ -75,7 +76,7 @@ html, body{
     width: 0;
     position: absolute;
     pointer-events: none;
-
+    
 }
 
 .ol-popup:after{
@@ -92,16 +93,32 @@ html, body{
     margin-left: -11px;
 }
 
-.ol-popup-closer{
+/* .ol-popup-closer{
     text-decoration: none;
-    position: absolute;
+    position: unset;
     top: 2px;
     right: 8px;
 }
-
 .ol-popup-closer:after{
     content: "x";
+} */
+
+/*------------------------------------------------------------------------------------------------------*/
+/*Propiedades de tablas dentro del popup: creando lineas y bordes para separar el texto*/
+
+.popup-table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    
 }
+  
+.popup-table th,
+.popup-table td {
+padding: 8px;
+border: 1px solid black;
+}
+  
+
 /*Animaciones de texto----------------------------------------------------------------------------------*/
 .text-animation {
     position: relative;
