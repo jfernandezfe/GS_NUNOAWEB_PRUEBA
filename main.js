@@ -151,60 +151,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
 //------------------------------------------------------------------------------------------------------------------------------
 //manipulando popups para despliegue de información de las capas----------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------------------
-
-// var container = document.getElementById('popup');
-// var content = document.getElementById('popup-content');
-// var closer = document.getElementById('popup-closer');
-
-// var popup = new ol.Overlay({
-    
-//     element: container,
-//     autoPan: true,
-//     autoPanAnimation: {
-
-//         duration: 250,
-
-//     },
-// });
-// map.addOverlay(popup);
-
-// closer.onclick = function(){
-//     popup.setPosition(undefined);
-//     closer.blur();
-//     return false; 
-// };
-
-// map.on('singleclick', function(evt){
-//     content.innerHTML = '';
-//     var resolution = mapView.getResolution();
-
-//     var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(evt.coordinate, resolution, 'EPSG:3857', {
-//         'INFO_FORMAT': 'application/json',
-//         'propertyName': 'fid,area,grilla,sector,id_manza,porc_avan,inter_avan'
-//     });
-
-//     //pendiente....
-//     if(url){
-//         $.getJSON(url, function(data){
-//             var feature = data.features[0];
-//             var props = feature.properties;
-//             // content.innerHTML = "<h3> Id: </h3><p>" + props.id + "</p>";
-//             content.innerHTML = "<h3> Fid : </h3> <p>"+ props.fid + '</p>'+
-//                                 "<h3> Area: </h3> <p>" + props.area + '</p>'+
-//                                 "<h3> Grilla : </h3> <p>" + props.grilla + '</p>'+
-//                                 "<h3> Sector : </h3> <p>" + props.sector.ToLowerCase() + '</p>'+
-//                                 "<h3> Id manzana : </h3> <p>" + props.id_manza + '</p>'+
-//                                 "<h3> Porcentaje avance : </h3> <p>" + props.porc_avan + '</p>'+
-//                                 "<h3> Intervalo : </h3> <p>" + props.inter_avan + "</p>";
-//             popup.setPosition(evt.coordinate);
-//         })
-//     } else{
-//         popup.setPosition(undefined);
-//     }
-// });
-
-//---------------------------------------------------------------------------------------------------
 //version de chat gpt: 
 
 
@@ -258,6 +204,8 @@ map.on('singleclick', function(evt) {
               '</table>';
             content.innerHTML = tableHTML;
             popup.setPosition(evt.coordinate);
+            
+            
             container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
 
           }
@@ -268,15 +216,4 @@ map.on('singleclick', function(evt) {
       }
 
 });
-
-
-
- 
-
-
-
-
-
-
-
 

@@ -35,6 +35,31 @@
         <button class="accept-button">Aceptar</button>
     </div>
 
+
+    <!-- Desplegando ventana para funciones query(Consulta de atributos ) -->
+    <div class="attQueryDiv" id="attQueryDiv">
+        <div class="headerDiv" id="headerDiv">
+            <label for="">Consulta de Atributos </label>
+        </div><br>
+        <label for="">Seleccionar Capa</label>
+        <select name="selectLayer" id="selectLayer">            
+        </select><br><br>
+
+        <label for="">Seleccionar Atributo</label>
+        <select name="selectAttribute" id="selectAttribute">            
+        </select><br><br>
+
+        <label for="">Selecionar Operador</label>
+        <select name="selectOperator" id="selectOperator">            
+        </select><br><br>
+
+        <label for="">Ingresar Valor</label>
+        <input type="text" name="enterValue" id="enterValue">            
+        </select><br><br>
+
+        <button type="button" id="attQryRun" class="attQryRun" onclick="attributeQuery()">Run</button>
+    </div>
+    
     
 
     <script src="resources/ol/ol.js"></script>
