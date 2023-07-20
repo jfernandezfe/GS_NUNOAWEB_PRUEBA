@@ -38,7 +38,7 @@ var baseGroup = new ol.layer.Group({
 map.addLayer(baseGroup);
 
 
-//OBSERVACIÓN: SE HA CAMBIA EL SERVIDOR DE GEOSERVER A SU VERSION 2.19 PARA QUE SEA COMPATIBLE CON EL SERVIDOR DE APACHE TOMCAT
+//OBSERVACIÓN: SE HA CAMBIA EL SERVIDOR DE GEOSERVER A SU VERSION 2.23.1 
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo:
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
