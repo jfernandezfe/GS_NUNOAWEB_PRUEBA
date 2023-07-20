@@ -8,6 +8,7 @@ var mapView = new ol.View({
 });
 
 
+//creando plantilla por defecto para despliegue de mapas  
 var map = new ol.Map({
     target: 'map',
     view: mapView,
@@ -39,7 +40,7 @@ map.addLayer(baseGroup);
 
 //OBSERVACIÓN: SE HA CAMBIA EL SERVIDOR DE GEOSERVER A SU VERSION 2.19 PARA QUE SEA COMPATIBLE CON EL SERVIDOR DE APACHE TOMCAT
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
-//Capa de avance de muestreo
+//Capa de avance de muestreo:
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
     title: "Ñuñoa Manzanas",
     source: new ol.source.TileWMS({
@@ -50,7 +51,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
     })
     
 });
-//map.addLayer(AVANCE_MUESTREOTile);
+//map.addLayer(AVANCE_MUESTREOTile); esta sentencia permite mostrar por defecto la capa que queremos desplegar, en este la de AVANCE_MUESTREO
 
 //Capa de buffer de la semana 26...
 var BUFFERS26Tile = new ol.layer.Tile({
@@ -64,7 +65,10 @@ var BUFFERS26Tile = new ol.layer.Tile({
 });
 //map.addLayer(BUFFERS26Tile);
 
+//---------------------------------------------------------------------------------------------------------------------
 //Creando grupos de layers para panel layerswitcher 
+//--------------------------------------------------------------------------------------------------------------
+
 var overlayGroup = new ol.layer.Group({
     title:'Overlays',
     fold: true,
@@ -74,8 +78,9 @@ map.addLayer(overlayGroup);
  
 
 
-
+//---------------------------------------------------------------------------------------------------------------------
 //Añadiendo Conmutador de capas:
+
 var layerSwitcher = new ol.control.LayerSwitcher({
     activationMode: 'click',
     startActive: false,
@@ -84,7 +89,7 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 
 map.addControl(layerSwitcher); 
 
-//Metodo de despliegue de coordenadas del tutorial:
+//Metodo de despliegue de coordenadas del tutorial:   NO FUNCIONAL!
 // var mousePosition = new ol.control.mousePosition({
 //     className: 'mousePosition',
 //     projection: 'EPSG:4326',
@@ -109,7 +114,7 @@ map.on('pointermove', function(event) {
 });
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-//Añadiendo cmedidor de escala del mapa:
+//Añadiendo medidor de escala del mapa:
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 var scaleControl = new ol.control.ScaleLine({
