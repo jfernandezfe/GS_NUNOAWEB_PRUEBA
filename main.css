@@ -213,18 +213,21 @@ border: 1px solid black;
     position: relative;
     display: block;
     margin: 10px auto auto 10px;
+    max-width: 50px; /* Ajusta este valor según el ancho deseado */
 }
 
 .fsButtonDiv{
     position: relative;
     display: block;
     margin: 10px auto auto 10px;
+    max-width: 50px; /* Ajusta este valor según el ancho deseado */
 }
 
 .featureInfoDiv {
     position: relative;
     display: block;
     margin: 1px auto auto 10px;
+    max-width: 50px; /* Ajusta este valor según el ancho deseado */
 }
 /* Definiendo propiedades para funciones Query Atribute, despliegue de información a nivel de tablas etc...*/
 

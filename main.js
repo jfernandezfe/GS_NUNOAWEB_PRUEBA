@@ -221,7 +221,7 @@ closer.onclick = function() {
 //         container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
 //       }
 
-// }); comentamos este codigo porque fue asignado al info popup...
+// }); comentamos este codigo porque fue asignado al boton info popup...
 
 
 
@@ -353,3 +353,161 @@ map.on('singleclick',function(evt){
       }
   }
 })
+
+//--------------------------------------------------------------------------------------------------------------
+//programando boton que activa Área de longitud y control de medidas.(length area and measure control -----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+var lengthButton = document.createElement('button');
+lengthButton.innerHTML = '<img src="resources/images/length.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+lengthButton.className = 'myButton';
+lengthButton.id ='lengthButton';
+
+var lengthElement = document.createElement('div');
+lengthElement.className = 'lengthDiv';
+lengthElement.appendChild(lengthButton);
+
+var lengthControl = new ol.control.Control({
+  element: lengthElement
+})
+
+var lengthFlag = false;
+lengthButton.addEventListener("click", () =>{
+  //disableOtherInteraction('lengthButton');
+  lengthButton.classList.toggle('clicked');
+  lengthFlag = !lengthFlag;
+  document.getElementById("map").style.cursor = "default";
+  if(lengthFlag){
+    map.removeInteraction(draw);
+    addInteraction('LineString');
+  }else {
+    map.removeInteraction(draw);
+    source.clear();
+    const elements = document.getElementsByClassName("ol-tooltrip ol-tooltrip-static");
+    while (elements.length > 0) elements[0].remove();
+  }
+})
+
+map.addControl(lengthControl);
+
+//creando btton de area...
+
+var areaButton = document.createElement('button');
+areaButton.innerHTML = '<img src="resources/images/area.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+areaButton.className = 'myButton';
+areaButton.id ='areaButton';
+
+var areaElement = document.createElement('div');
+areaElement.className = 'areaDiv';
+areaElement.appendChild(areaButton);
+
+var areaControl = new ol.control.Control({
+  element: areaElement
+})
+
+var areaFlag = false;
+areaButton.addEventListener("click", () =>{
+  //disableOtherInteraction('areaButton');
+  areaButton.classList.toggle('clicked');
+  areaFlag = !areaFlag;
+  document.getElementById("map").style.cursor = "default";
+  if(areaFlag){
+    map.removeInteraction(draw);
+    addInteraction('Polygon');
+  } else {
+    map.removeInteraction(draw);
+    source.clear();
+    const elements = document.getElementsByClassName("ol-tooltrip ol-tooltrip-static");
+    // while (elements.area > 0) elements[0].remove(); //no debiese ser por el area?
+    while (elements.length > 0) elements[0].remove(); //se toma el componente de length???
+  }
+})
+
+map.addControl(areaControl);
+
+
+/**
+ * Mensage que se muestra cuando el usuario esta dibujando un poligono...
+ * @type {string}
+ */
+
+var continueLineMsg = 'Click para dibujar el poligono, Doble click al completarlo';
+
+/**
+ * Mensaje para mostrar cuando el usuario está dibujnado una linea...
+ * @type {string}
+ */
+var continueLineMsg = 'Click para dibujar la linea, doble click para terinarla';
+
+var draw; //variable global que podremos remover despues...
+
+
+var source = new ol.source.Vector();
+var vector = new ol.layer.Vector({
+  source: source,
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(255, 255, 255, 0.2)',
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#ffcc33',
+      width: 2,
+    }),
+    image: new ol.style.Circle({
+      radius: 7,
+      fill: new ol.style.Fill({
+        color: '#ffcc33'
+      }),
+    }),
+  }),
+});
+
+map.addLayer(vector);
+
+//funciones pendientes.....
+
+function addInteraction(intType){
+//   //codigo pendiente dentro de esta funcion :'v 
+//   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣠⡤⠤⠶⠶⠚⠛⠛⠉⠙⠛⠻⢶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⠶⠒⠋⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⠾⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⠏⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠱⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣶⣼⣧⠀⠀⠀⠻⣦⣤⣀⠀⠀⠀⠀⠀⠀⠹⣷⣤⣤⣾⡿⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⠿⠷⠶⢶⣻⣿⣿⣿⣿⣿⣛⣛⣛⣛⣛⣿⣿⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠁⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣩⡿⠛⠉⠉⠉⠻⣿⡍⠉⠉⠙⠻⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠃⠀⠀⠀⢠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡞⠋⠀⠀⠀⠀⠀⠀⠈⠻⣦⠀⠀⢣⡌⢿⡄⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⢀⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠘⢷⡄⠈⢻⣾⣧⠀⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⠀⢠⡾⠋⠀⠀⠀⠀⠀⣸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠏⠀⠀⠀⠀⠀⠀⠀⣾⡟⠹⣶⠀⠀⠀⠹⣦⠀⠹⣿⡆⠀⠀⠀⠀⠀⠀
+// ⠀⠀⠀⠀⣴⠟⠀⠀⠀⠀⠀⠀⣰⣿⡧⠶⠒⠛⠛⠷⢶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠿⠦⠤⠿⠄⠀⠀⠀⠸⣧⠀⠘⣿⡄⠀⠀⠀⠀⠀
+// ⠀⠀⢀⣼⡿⠀⠀⠀⠀⠀⣠⣾⣿⠋⠀⠀⠀⠀⠀⠀⠀⠉⠛⠷⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣇⠀⠸⣿⣦⠀⠀⠀⠀ ESTOY HASTA LA VRGA :(!
+// ⢠⡄⣸⠿⡇⠀⠀⠀⣠⣾⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣦⠀⠀⠀⠀⠀⠀⠀⠀⠙⣧⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⢹⣿⣧⠀⠀⠀
+// ⢸⡇⠀⣸⠃⠀⠀⠘⣩⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⠀⠀⠀⣿⣿⣷⠀⠀
+// ⣿⡇⢰⡏⠀⠀⠀⢠⣿⡏⢡⡇⢀⣶⠲⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡏⠀⠀⠀⠀⢀⣀⣀⣀⣀⠀⠀⠉⠳⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠃⠀⠸⣧⠙⣇⠀
+// ⢻⣿⡿⠁⠀⠀⠰⠟⠋⠀⣼⠃⣸⣃⣤⡿⠀⠀⠀⠀⠀⠀⠀⢀⣴⠏⠀⠀⣠⡴⠟⠋⠙⢿⡉⠉⠛⠛⢻⠲⢤⣍⡛⠓⠶⠦⠤⠤⠤⠤⠶⠛⠋⠀⠀⢻⡇⢹⡀
+// ⢸⣿⡇⠀⠀⠀⠀⠀⠀⢰⣟⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⣠⡿⠁⠀⣠⡾⠋⠀⠀⠀⠀⠈⢻⡄⠀⣠⠟⠀⠀⠹⣿⢶⣄⣀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠈⢻⡈⡇
+// ⢸⣿⡇⠀⠀⠀⠀⠀⠀⣾⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠋⠀⠀⣴⣿⣄⠀⠀⠀⠀⠀⠀⠈⣿⠞⠉⠀⠀⠀⠀⠙⣦⡈⠉⠛⠻⣿⡿⠛⢷⡄⠀⠀⠀⠀⠀⠀⢰⣧⡇
+// ⢸⣿⡇⠀⠀⠀⢰⣄⡾⠃⠈⠛⢦⣄⣀⣀⣀⣀⣠⡴⠟⠁⠀⠀⣼⠃⠈⢿⣆⠀⠀⠀⠀⣠⠞⠋⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠛⠛⠉⠀⠀⠀⠹⣦⠀⠀⠀⠀⣿⣿
+// ⢸⣿⡇⠀⠀⠀⠘⠏⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⢠⡏⠀⠀⠈⠿⣧⣤⠶⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⠀⠀⠀⠀⠀⢹⣿
+// ⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⣠⡤⠀⠀⠀  ⠈⣿
+// ⣾⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⢀⣴⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠁⠀⠀⠀⠀ ⣿
+// ⢹⣿⢿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣤⡶⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⠶⠛⠁⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠈⣿⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⠤⠤⠤⠶⠒⠒⠛⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⣿⡀⢿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡤⠶⠚⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⢸⡇⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡟⠀⠀⠀⠀⠀⢀⣠⡴⠞⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⠀⢷⡀⢻⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠇⠀⠀⢀⣠⠶⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⠀⠈⢷⡊⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡏⠀⣠⡶⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⠀⠀⠈⢷⣽⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡟⢠⡼⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⠀⠀⠀⠀⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿
+// ⠀⠀⠀⠀⠀⢸⡿⢻⣆⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿
+// ⠀⠀⠀⠀⠀⠘⣷⠀⠙⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⡏
+// ⠀⠀⠀⠀⠀⠀⢹⣇⠀⠀⠙⠳⢦⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⡿⠀
+// ⠀⠀⠀⠀⠀⠀⠀⢻⡀⠀⠀⠀⠀⠈⠙⠳⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠟⠁⠀
+// ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀
+}
+
+
+
+
+
+
+
