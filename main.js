@@ -4,7 +4,7 @@
 
 var mapView = new ol.View({
     center: ol.proj.fromLonLat([-70.585518,-33.444829]),
-    zoom: 17,
+    zoom: 15,
 });
 
 
@@ -12,6 +12,7 @@ var mapView = new ol.View({
 var map = new ol.Map({
     target: 'map',
     view: mapView,
+    controls: []
 
 });
 
@@ -155,7 +156,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-//manipulando popups para despliegue de información de las capas----------------------------------------------------------------
+//manipulando popups para despliegue de información de capa AVANCE_MUESTREO----------------------------------------------------------------
 //version de chat gpt: 
 
 
@@ -178,8 +179,139 @@ closer.onclick = function() {
   return false;
 };
 
-map.on('singleclick', function(evt) {
-  content.innerHTML = '';
+// map.on('singleclick', function(evt) {
+//   content.innerHTML = '';
+//   var resolution = map.getView().getResolution();
+
+//   var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
+//     evt.coordinate,
+//     resolution,
+//     map.getView().getProjection().getCode(),
+//     {
+//       'INFO_FORMAT': 'application/json',
+//       'propertyName': 'area,grilla,sector,id_manza,porc_avan,inter_avan'
+//     }
+//   );
+
+//     //colocando campos en una tabla:
+//     if (url) {
+//         $.getJSON(url, function(data) {
+//           var feature = data.features[0];
+//           if (feature) {
+//             var props = feature.properties;
+//             var tableHTML =
+//               '<table class="popup-table">' +
+//               '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
+//               '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
+//               '<tr><th>Sector </th><td>' + props.sector + '</td></tr>' +
+//               '<tr><th>ID Manza </th><td>' + props.id_manza + '</td></tr>' +
+//               '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '%</td></tr>' +
+//               '<tr><th>Intervalo </th><td>' + props.inter_avan + '</td></tr>' +
+//               '</table>';
+//             content.innerHTML = tableHTML;
+//             popup.setPosition(evt.coordinate);
+            
+            
+//             container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+//           }
+//         });
+//       } else {
+//         popup.setPosition(undefined);
+//         container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+//       }
+
+// }); comentamos este codigo porque fue asignado al info popup...
+
+
+
+//--------------------------------------------------------------------------------------------------------------
+//programando home button         -----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+
+var homeButton = document.createElement('button');
+homeButton.innerHTML = '<img src="resources/images/home-2.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+homeButton.className = 'myButton';
+homeButton.id= 'homeButton';
+
+var homeElement = document.createElement('div');
+homeElement.className = 'homeButtonDiv';
+homeElement.appendChild(homeButton);
+
+var homeControl = new ol.control.Control({
+  element: homeElement
+})
+
+homeButton.addEventListener("click", ()=>{
+  location.href = "index.html";
+}) 
+
+map.addControl(homeControl);
+
+
+//--------------------------------------------------------------------------------------------------------------
+//programando fullscreen button         -----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+
+var fsButton = document.createElement('button');
+fsButton.innerHTML = '<img src="resources/images/fullscreen.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+fsButton.className = 'myButton';
+fsButton.id= 'fsButton';
+
+
+var fsElement = document.createElement('div');
+fsElement.className = 'fsButtonDiv';
+fsElement.appendChild(fsButton);
+
+var fsControl = new ol.control.Control({
+  element: fsElement
+})
+
+fsButton.addEventListener("click",() =>{
+  var mapEle = document.getElementById("map");
+  if(mapEle.requestFullscreen){
+    mapEle.requestFullscreen();
+  } else if (mapEle.msRequestFullscreen){
+    mapEle.requestFullscreen();
+  } else if (mapEle.mozRequestFullscreen){
+    mapEle.mozRequestFullscreen();
+  } else if(mapEle.webkitRequestFullscreen){
+    mapEle.webkitRequestFullscreen();
+  }
+})
+
+map.addControl(fsControl);
+
+//--------------------------------------------------------------------------------------------------------------
+//programando botton que activa popups con información (featureInfo)       -----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+
+var featureInfoButton = document.createElement('button');
+featureInfoButton.innerHTML = '<img src="resources/images/infopopup.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+featureInfoButton.className = 'myButton';
+featureInfoButton.id ='featureInfoButton';
+
+var featureInfoElement = document.createElement('div');
+featureInfoElement.className = 'featureInfoDiv';
+featureInfoElement.appendChild(featureInfoButton);
+
+var featureInfoControl = new ol.control.Control({
+  element: featureInfoElement
+})
+
+var featureInfoFlag = false;
+featureInfoButton.addEventListener("click", ()=>{
+  featureInfoButton.classList.toggle('clicked');
+  featureInfoFlag = !featureInfoFlag;
+})
+
+map.addControl(featureInfoControl);
+
+map.on('singleclick',function(evt){
+  if(featureInfoFlag){
+    content.innerHTML = '';
   var resolution = map.getView().getResolution();
 
   var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
@@ -219,6 +351,5 @@ map.on('singleclick', function(evt) {
         popup.setPosition(undefined);
         container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
       }
-
-});
-
+  }
+})
