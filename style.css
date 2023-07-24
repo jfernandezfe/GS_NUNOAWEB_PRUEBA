@@ -230,7 +230,7 @@ border: 1px solid black;
     max-width: 50px; /* Ajusta este valor según el ancho deseado */
 }
 
-.lengthDiv{
+.lengthButtonDiv{
     position: relative;
     display: block;
     margin: 1px auto auto 10px;
@@ -250,6 +250,8 @@ border: 1px solid black;
     position: relative;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
     opacity: 0.7;
     white-space: nowrap;
     font-size: 12px;
@@ -268,7 +270,7 @@ border: 1px solid black;
 
 .ol-tooltip-measure:before,
 .ol-tooltip-static:before {
-    border-top: 6px solid rgba(0,0,0,0.5);
+    border-top: 6px solid rgba(0, 0, 0, 0.5);
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
     content: "";
@@ -278,7 +280,7 @@ border: 1px solid black;
     left: 50%;
 }
 
-.ol-tooltip-static{
+.ol-tooltip-static::before{
     border-top-color: #ffcc33;
 
 }
