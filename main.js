@@ -364,7 +364,7 @@ lengthButton.className = 'myButton';
 lengthButton.id ='lengthButton';
 
 var lengthElement = document.createElement('div');
-lengthElement.className = 'lengthDiv';
+lengthElement.className = 'lengthButtonDiv';
 lengthElement.appendChild(lengthButton);
 
 var lengthControl = new ol.control.Control({
@@ -372,7 +372,7 @@ var lengthControl = new ol.control.Control({
 })
 
 var lengthFlag = false;
-lengthButton.addEventListener("click", () =>{
+lengthButton.addEventListener("click", () => {
   //disableOtherInteraction('lengthButton');
   lengthButton.classList.toggle('clicked');
   lengthFlag = !lengthFlag;
@@ -380,10 +380,10 @@ lengthButton.addEventListener("click", () =>{
   if(lengthFlag){
     map.removeInteraction(draw);
     addInteraction('LineString');
-  }else {
+  } else {
     map.removeInteraction(draw);
     source.clear();
-    const elements = document.getElementsByClassName("ol-tooltrip ol-tooltrip-static");
+    const elements = document.getElementsByClassName("ol-tooltip ol-tooltip-static");
     while (elements.length > 0) elements[0].remove();
   }
 })
@@ -406,7 +406,7 @@ var areaControl = new ol.control.Control({
 })
 
 var areaFlag = false;
-areaButton.addEventListener("click", () =>{
+areaButton.addEventListener("click", () => {
   //disableOtherInteraction('areaButton');
   areaButton.classList.toggle('clicked');
   areaFlag = !areaFlag;
@@ -417,9 +417,9 @@ areaButton.addEventListener("click", () =>{
   } else {
     map.removeInteraction(draw);
     source.clear();
-    const elements = document.getElementsByClassName("ol-tooltrip ol-tooltrip-static");
-    // while (elements.area > 0) elements[0].remove(); //no debiese ser por el area?
-    while (elements.length > 0) elements[0].remove(); //se toma el componente de length???
+    const elements = document.getElementsByClassName("ol-tooltip ol-tooltip-static");
+    while (elements.length > 0) elements[0].remove(); //no debiese ser por el area?
+    // while (elements.area > 0) elements[0].remove(); //se toma el componente de length???
   }
 })
 
@@ -431,7 +431,7 @@ map.addControl(areaControl);
  * @type {string}
  */
 
-var continueLineMsg = 'Click para dibujar el poligono, Doble click al completarlo';
+var continuePolygonMsg = 'Click para dibujar el poligono, Doble click al completarlo';
 
 /**
  * Mensaje para mostrar cuando el usuario está dibujnado una linea...
@@ -456,7 +456,7 @@ var vector = new ol.layer.Vector({
     image: new ol.style.Circle({
       radius: 7,
       fill: new ol.style.Fill({
-        color: '#ffcc33'
+        color: '#ffcc33',
       }),
     }),
   }),
@@ -464,15 +464,14 @@ var vector = new ol.layer.Vector({
 
 map.addLayer(vector);
 
+function addInteraction(intType) {
 
-
-function addInteraction(intType){
   draw = new ol.interaction.Draw({
     source: source,
     type: intType,
     style: new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(200, 200, 100, 0.6)',
+        color: 'rgba(200, 200, 200, 0.6)',
       }),
       stroke: new ol.style.Stroke({
         color: 'rgba(0, 0, 0, 0.5)',
@@ -481,7 +480,7 @@ function addInteraction(intType){
       }),
       image: new ol.style.Circle({
         radius: 5,
-        fill: new ol.style.Stroke({
+        stroke: new ol.style.Stroke({
           color: 'rgba(0, 0, 0, 0.7)',
         }),
         fill: new ol.style.Fill({
@@ -507,11 +506,11 @@ function addInteraction(intType){
    * @param {import("../src/ol/MapBrowserEvent").default} evt The event.
    */
   var pointerMoveHandler = function (evt) {
-    if(evt.dragging) {
+    if (evt.dragging) {
       return;
     }
     /** @type {string} */
-    var helpMsg = 'Click to start drawing';
+    var helpMsg = 'Click para comenzar a dibujar!';
 
     if(sketch){
       var geom = sketch.getGeometry();
@@ -533,15 +532,408 @@ function addInteraction(intType){
   draw.on('drawstart', function(evt){
     //set sketch
     sketch = evt.feature;
-    /**@type {import("../src/ol/coordinate.js")} */
-  })
+
+    /**@type {import("../src/ol/coordinate.js").Coordinate|undefined} */
+    var tooltipCoord = evt.coordinate;
+
+    //listener = sketch.getGeometry().on('change', function (evt) {
+    sketch.getGeometry().on('change', function(evt){
+      var geom = evt.target;
+      var output;
+      if(geom instanceof ol.geom.Polygon){
+        output = formatArea(geom);
+        tooltipCoord = geom.getInteriorPoint().getCoordinates();
+        
+      }else if (geom instanceof ol.geom.LineString){
+        output = formatLength(geom);
+        tooltipCoord = geom.getLastCoordinate();
+        
+      }
+      measureTooltipElement.innerHTML = output;
+      measureTooltipElement.setPosition(tooltipCoord);
+    });  
+  });
+
+  draw.on('drawend', function(){
+    measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
+    measureTooltip.setOffset([0, -7]);
+    //unset sketch
+    sketch = null;
+    //Desactive la información sobre herramientas para poder crear una nueva...
+    measureTooltipElement = null;
+    createMeasureTooltip();
+    //ol.Observable.unByKey(Listener);
+  });
+}
+
+/**
+ * the help tooltip element
+ * @type {HTMLElement}
+ */
+
+var helpTooltipElement;
+
+/**
+ * creates  a new hel tooltip element 
+ */
+function createHelpTooltip(){
+  if(helpTooltipElement){
+    helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+  }
+  helpTooltipElement = document.createElement('div');
+  helpTooltipElement.className = 'ol-tooltip hidden';
+  helpTooltip = new ol.Overlay({
+    element: helpTooltipElement,
+    offset: [15, 0],
+    positioning: 'center-left',
+
+  });
+  map.addOverlay(helpTooltip);
+}
+
+map.getViewport().addEventListener('mouseout', function () {
+  helpTooltipElement.classList.add('hidden');
+});
+
+/**
+ * the measure tooltip element.
+ * @type {HTMLElement}
+ */
+var measureTooltipElement;
+
+/**
+ * overlay to show the measurement.
+ * @type {Overlay}
+ */
+var measureTooltip;
+
+function createMeasureTooltip(){
+  if(measureTooltipElement){
+    measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+  }
+  measureTooltipElement = document.createElement('div');
+  measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
+  measureTooltip = new ol.Overlay({
+    element: measureTooltipElement,
+    offset: [0, -15],
+    positioning: 'bottom-center',
+  });
+  map.addOverlay(measureTooltip);
+}
+
+/**
+ * format lenght output 
+ * @param {LineString} line The line.
+ * @return {string} the formatted lenght.
+ */
+
+var formatLength = function (line) {
+  var length = ol.sphere.getLength(line);
+  var output;
+  if (length > 100) {
+    output = Math.round((length / 1000) * 100) / 100 + ' ' + 'Km';
+  } else {
+    output = Math.round(length * 100) / 100 + ' ' + 'm';
+  }
+  return output;
+};
 
 
+
+/***
+ * Format area output
+ * @param {Polygon} polygon The polygon.
+ * @return {string} formated area.
+ */
+
+
+var formatArea = function (polygon){
+  var area = ol.sphere.getArea(polygon);
+  var output;
+
+  if(area > 10000){
+    output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km<sup>2</sup>';
+  }else{
+    output = Math.round(area * 100) / 100 +' '+'m<sup>2</sup>';
+  }
+  return output;
 }
 
 
+/*-------------------------------------------------------------------------------------------------------------*/
+/**version de chat gpt: */
 
+//--------------------------------------------------------------------------------------------------------------
+//programando botón que activa Área de longitud y control de medidas (length area and measure control)
+//--------------------------------------------------------------------------------------------------------------
 
+// var lengthButton = document.createElement('button');
+// lengthButton.innerHTML = '<img src="resources/images/length.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+// lengthButton.className = 'myButton';
+// lengthButton.id = 'lengthButton';
+
+// var lengthElement = document.createElement('div');
+// lengthElement.className = 'lengthDiv';
+// lengthElement.appendChild(lengthButton);
+
+// var lengthControl = new ol.control.Control({
+//   element: lengthElement
+// });
+
+// var lengthFlag = false;
+// lengthButton.addEventListener("click", () => {
+//   //disableOtherInteraction('lengthButton');
+//   lengthButton.classList.toggle('clicked');
+//   lengthFlag = !lengthFlag;
+//   document.getElementById("map").style.cursor = "default";
+//   if (lengthFlag) {
+//     map.removeInteraction(draw);
+//     addInteraction('LineString');
+//   } else {
+//     map.removeInteraction(draw);
+//     source.clear();
+//     const elements = document.getElementsByClassName("ol-tooltip ol-tooltip-measure");
+//     while (elements.length > 0) elements[0].remove();
+//   }
+// });
+
+// map.addControl(lengthControl);
+
+// //creando botón de área...
+
+// var areaButton = document.createElement('button');
+// areaButton.innerHTML = '<img src="resources/images/area.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+// areaButton.className = 'myButton';
+// areaButton.id = 'areaButton';
+
+// var areaElement = document.createElement('div');
+// areaElement.className = 'areaDiv';
+// areaElement.appendChild(areaButton);
+
+// var areaControl = new ol.control.Control({
+//   element: areaElement
+// });
+
+// var areaFlag = false;
+// areaButton.addEventListener("click", () => {
+//   //disableOtherInteraction('areaButton');
+//   areaButton.classList.toggle('clicked');
+//   areaFlag = !areaFlag;
+//   document.getElementById("map").style.cursor = "default";
+//   if (areaFlag) {
+//     map.removeInteraction(draw);
+//     addInteraction('Polygon');
+//   } else {
+//     map.removeInteraction(draw);
+//     source.clear();
+//     const elements = document.getElementsByClassName("ol-tooltip ol-tooltip-measure");
+//     while (elements.length > 0) elements[0].remove();
+//   }
+// });
+
+// map.addControl(areaControl);
+
+// var continuePolygonMsg = 'Click para dibujar el polígono, Doble click al completarlo';
+
+// var continueLineMsg = 'Click para dibujar la línea, doble click para terminarla';
+
+// var draw;
+
+// var source = new ol.source.Vector();
+// var vector = new ol.layer.Vector({
+//   source: source,
+//   style: new ol.style.Style({
+//     fill: new ol.style.Fill({
+//       color: 'rgba(255, 255, 255, 0.2)',
+//     }),
+//     stroke: new ol.style.Stroke({
+//       color: '#ffcc33',
+//       width: 2,
+//     }),
+//     image: new ol.style.Circle({
+//       radius: 7,
+//       fill: new ol.style.Fill({
+//         color: '#ffcc33',
+//       }),
+//     }),
+//   }),
+// });
+
+// map.addLayer(vector);
+
+// function addInteraction(intType) {
+//   draw = new ol.interaction.Draw({
+//     source: source,
+//     type: intType,
+//     style: new ol.style.Style({
+//       fill: new ol.style.Fill({
+//         color: 'rgba(200, 200, 100, 0.6)',
+//       }),
+//       stroke: new ol.style.Stroke({
+//         color: 'rgba(0, 0, 0, 0.5)',
+//         lineDash: [10, 10],
+//         width: 2,
+//       }),
+//       image: new ol.style.Circle({
+//         radius: 5,
+//         fill: new ol.style.Stroke({
+//           color: 'rgba(0, 0, 0, 0.7)',
+//         }),
+//         fill: new ol.style.Fill({
+//           color: 'rgba(255, 255, 255, 0.2)',
+//         }),
+//       }),
+//     }),
+//   });
+//   map.addInteraction(draw);
+
+//   createMeasureTooltip();
+//   createHelpTooltip();
+
+//   var sketch;
+//   var tooltipCoord;
+
+//   var pointerMoveHandler = function (evt) {
+//     if (evt.dragging) {
+//       return;
+//     }
+//     var helpMsg = 'Click to start drawing';
+
+//     if (sketch) {
+//       var geom = sketch.getGeometry();
+//       if (geom instanceof ol.geom.Polygon) {
+//         helpMsg = continuePolygonMsg;
+//       } else if (geom instanceof ol.geom.LineString) {
+//         helpMsg = continueLineMsg;
+//       }
+//     }
+//     helpTooltipElement.innerHTML = helpMsg;
+//     helpTooltipElement.setPosition(evt.coordinate);
+//     helpTooltipElement.classList.remove('hidden');
+//   };
+
+//   map.on('pointermove', pointerMoveHandler);
+
+//   draw.on('drawstart', function (evt) {
+//     sketch = evt.feature;
+//     tooltipCoord = evt.coordinate;
+
+//     var listener;
+//     sketch.getGeometry().on('change', function (evt) {
+//       var geom = evt.target;
+//       var output;
+//       if (geom instanceof ol.geom.Polygon) {
+//         output = formatArea(geom);
+//         tooltipCoord = geom.getInteriorPoint().getCoordinates();
+//       } else if (geom instanceof ol.geom.LineString) {
+//         output = formatLength(geom);
+//         tooltipCoord = geom.getLastCoordinate();
+//       }
+//       measureTooltipElement.innerHTML = output;
+//       measureTooltipElement.setPosition(tooltipCoord);
+//     });
+//     listener = sketch.getGeometry().on('change', function (evt) {
+//       var geom = evt.target;
+//       var output;
+//       if (geom instanceof ol.geom.LineString) {
+//         output = formatLength(geom);
+//         tooltipCoord = geom.getLastCoordinate();
+//         measureTooltipElement.innerHTML = output;
+//         measureTooltipElement.setPosition(tooltipCoord);
+//       }
+//     });
+
+//     sketch.on('change', function (evt) {
+//       var geom = evt.target.getGeometry();
+//       var output;
+//       if (geom instanceof ol.geom.LineString) {
+//         output = formatLength(geom);
+//         tooltipCoord = geom.getLastCoordinate();
+//         measureTooltipElement.innerHTML = output;
+//         measureTooltipElement.setPosition(tooltipCoord);
+//       }
+//     });
+
+//     sketch.on('change:geometry', function (evt) {
+//       var geom = evt.target.getGeometry();
+//       var output;
+//       if (geom instanceof ol.geom.LineString) {
+//         output = formatLength(geom);
+//         tooltipCoord = geom.getLastCoordinate();
+//         measureTooltipElement.innerHTML = output;
+//         measureTooltipElement.setPosition(tooltipCoord);
+//       }
+//     });
+
+//     sketch.on('drawend', function (evt) {
+//       measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
+//       measureTooltip.setOffset([0, -7]);
+//       tooltipCoord = evt.feature.getGeometry().getLastCoordinate();
+//       createMeasureTooltip();
+//       ol.Observable.unByKey(listener);
+//     });
+//   });
+// }
+
+// var helpTooltipElement;
+// var helpTooltip;
+
+// function createHelpTooltip() {
+//   if (helpTooltipElement) {
+//     helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+//   }
+//   helpTooltipElement = document.createElement('div');
+//   helpTooltipElement.className = 'ol-tooltip hidden';
+//   helpTooltip = new ol.Overlay({
+//     element: helpTooltipElement,
+//     offset: [15, 0],
+//     positioning: 'center-left',
+//   });
+//   map.addOverlay(helpTooltip);
+// }
+
+// map.getViewport().addEventListener('mouseout', function () {
+//   helpTooltipElement.classList.add('hidden');
+// });
+
+// var measureTooltipElement;
+// var measureTooltip;
+
+// function createMeasureTooltip() {
+//   if (measureTooltipElement) {
+//     measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+//   }
+//   measureTooltipElement = document.createElement('div');
+//   measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
+//   measureTooltip = new ol.Overlay({
+//     element: measureTooltipElement,
+//     offset: [0, -15],
+//     positioning: 'bottom-center',
+//   });
+//   map.addOverlay(measureTooltip);
+// }
+
+// var formatLength = function (line) {
+//   var length = ol.sphere.getLength(line);
+//   var output;
+//   if (length > 1000) {
+//     output = Math.round((length / 1000) * 100) / 100 + ' Km';
+//   } else {
+//     output = Math.round(length * 100) / 100 + ' m';
+//   }
+//   return output;
+// };
+
+// var formatArea = function (polygon) {
+//   var area = ol.sphere.getArea(polygon);
+//   var output;
+//   if (area > 10000) {
+//     output = Math.round((area / 1000000) * 100) / 100 + ' km<sup>2</sup>';
+//   } else {
+//     output = Math.round(area * 100) / 100 + ' m<sup>2</sup>';
+//   }
+//   return output;
+// };
 
 
 
