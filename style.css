@@ -285,26 +285,36 @@ border: 1px solid black;
 
 }
 
+.ol-dragbox{
+    border: 2px dashed rgba(0, 0, 0, 0.603);
+    background-color: rgba(13, 206, 196, 0.137);
+}
 
+.ziButtonDiv{
+    position: relative;
+    display: block;
+    margin: 1px auto auto 10px;
+    max-width: 40px; /* Ajusta este valor según el ancho deseado */
+}
 
+.zoButtonDiv{
+    position: relative;
+    display: block;
+    margin: 1px auto auto 10px;
+    max-width: 40px; /* Ajusta este valor según el ancho deseado */
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Estilo para el popup */
+/* .infbtnpopup {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.473);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+} */
+  
 
 /* Definiendo propiedades para funciones Query Atribute, despliegue de información a nivel de tablas etc...*/
 

@@ -663,3 +663,98 @@ var formatArea = function (polygon){
   return output;
 }
 
+/** -------------------------------------------------------------------------------------------------------------- */
+// Función de zoom in y zoom out mas restricciones...
+//versión con restricciones hecha por chat gpt:
+
+
+// Función para desactivar el botón contrario
+function deactivateButton(button) {
+  if (button === ziButton) {
+    zoButton.classList.remove('clicked');
+    map.removeInteraction(zoomOutInteraction);
+  } else if (button === zoButton) {
+    ziButton.classList.remove('clicked');
+    map.removeInteraction(zoomInInteraction);
+  }
+}
+
+// Función para manejar el click en los botones de zoom
+function handleZoomButtonClick(button, interaction) {
+  if (!button.classList.contains('clicked')) {
+    button.classList.add('clicked');
+    map.addInteraction(interaction);
+  } else {
+    button.classList.remove('clicked');
+    map.removeInteraction(interaction);
+  }
+  deactivateButton(button); // Desactivar el otro botón al activar uno
+}
+
+//ZOOM IN:
+var zoomInInteraction = new ol.interaction.DragBox();
+
+zoomInInteraction.on('boxend', function() {
+  var zoomInExtent = zoomInInteraction.getGeometry().getExtent();
+  map.getView().fit(zoomInExtent);
+});
+
+var ziButton = document.createElement('button');
+ziButton.innerHTML = '<img src="resources/images/zoomin.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+ziButton.className = 'myButton';
+ziButton.id = 'ziButton';
+
+var ziElement = document.createElement('div');
+ziElement.className = 'ziButtonDiv';
+ziElement.appendChild(ziButton);
+
+var ziControl = new ol.control.Control({
+  element: ziElement
+})
+
+map.addControl(ziControl);
+
+// Añadir evento de click para el botón de Zoom In
+ziButton.addEventListener("click", () => {
+  handleZoomButtonClick(ziButton, zoomInInteraction);
+  document.getElementById("map").style.cursor = ziButton.classList.contains('clicked') ? "zoom-in" : "default";
+});
+
+
+//ZOOM OUT:
+var zoomOutInteraction = new ol.interaction.DragBox();
+
+zoomOutInteraction.on('boxend', function() {
+  var zoomOutExtent = zoomOutInteraction.getGeometry().getExtent();
+  map.getView().setCenter(ol.extent.getCenter(zoomOutExtent));
+
+  mapView.setZoom(mapView.getZoom() -1)
+});
+
+var zoButton = document.createElement('button');
+zoButton.innerHTML = '<img src="resources/images/zoomOut.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+zoButton.className = 'myButton';
+zoButton.id = 'zoButton';
+
+var zoElement = document.createElement('div');
+zoElement.className = 'zoButtonDiv';
+zoElement.appendChild(zoButton);
+
+var zoControl = new ol.control.Control({
+  element: zoElement
+})
+
+map.addControl(zoControl);
+
+// Añadir evento de click para el botón de Zoom Out
+zoButton.addEventListener("click", () => {
+  handleZoomButtonClick(zoButton, zoomOutInteraction);
+  document.getElementById("map").style.cursor = zoButton.classList.contains('clicked') ? "zoom-out" : "default";
+});
+
+
+
+
+
+
+
