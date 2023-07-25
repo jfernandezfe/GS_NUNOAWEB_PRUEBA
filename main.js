@@ -752,6 +752,68 @@ zoButton.addEventListener("click", () => {
   document.getElementById("map").style.cursor = zoButton.classList.contains('clicked') ? "zoom-out" : "default";
 });
 
+//-------------------------------------------------------------------------------------------------------------------
+//añadiendo funciones para consultas de atributos (Query selector)...
+
+var geojson;
+var featureOverlay;
+
+var qryButton = document.createElement('button');
+qryButton.innerHTML = '<img src="resources/images/query.png" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+qryButton.className = 'myButton';
+qryButton.id = 'qryButton';
+
+var qryElement = document.createElement('div');
+qryElement.className = 'myButtonDiv';
+qryElement.appendChild(qryButton);
+
+var qryControl = new ol.control.Control({
+  element: qryElement
+})
+
+var qryFlag = false;
+qryButton.addEventListener('click', () => {
+  //disableOtherInteraction('lengthButton');
+  qryButton.classList.toggle('clicked');
+  qryFlag = !qryFlag;
+  document.getElementById("map").style.cursor = "default";
+  if(qryFlag){
+    if(geojson){
+      geojson.getSource().clear();
+      map.removeLayer(geojson);
+    }
+
+    if(featureOverlay){
+      featureOverlay.getSource().clear();
+      map.removeLayer(featureOverlay);
+    }
+    
+    document.getElementById("attQueryDiv").style.display = "block";
+
+    bolIdentify = false;
+
+    addMapLayerList();
+
+  }else {
+    
+    document.getElementById("attQueryDiv").style.display = "none";
+    document.getElementById("attListDiv").style.display = "none";
+
+    if(geojson){
+      geojson.getSource().clear();
+      map.removeLayer(geojson);
+    }
+
+    if(featureOverlay) {
+      featureOverlay.getSource().clear();
+      map.removeLayer(featureOverlay);
+    }
+
+  }
+
+})
+
+map.addControl(qryControl);
 
 
 

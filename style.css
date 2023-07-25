@@ -304,6 +304,12 @@ border: 1px solid black;
     max-width: 40px; /* Ajusta este valor según el ancho deseado */
 }
 
+.myButtonDiv{
+    position: relative;
+    display: block;
+    margin: 1px auto auto 10px;
+    max-width: 40px; /* Ajusta este valor según el ancho deseado */
+}
 /* Estilo para el popup */
 /* .infbtnpopup {
     position: absolute;
@@ -320,7 +326,7 @@ border: 1px solid black;
 
 .attQueryDiv{
     position: absolute;
-    display: block;
+    display: none;
     margin: 70px auto auto 45px;
     /*padding: 10px;*/
     width: 250px;
