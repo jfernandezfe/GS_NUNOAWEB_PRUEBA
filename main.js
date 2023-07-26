@@ -3,38 +3,38 @@
 // ubicado en en la ciudad de santiago de chile, cordenadas: -70.6483, -33.4489
 
 var mapView = new ol.View({
-    center: ol.proj.fromLonLat([-70.585518,-33.444829]),
-    zoom: 15,
+  center: ol.proj.fromLonLat([-70.585518, -33.444829]),
+  zoom: 15,
 });
 
 
 //creando plantilla por defecto para despliegue de mapas  
 var map = new ol.Map({
-    target: 'map',
-    view: mapView,
-    controls: []
+  target: 'map',
+  view: mapView,
+  controls: []
 
 });
 
 var noneTile = new ol.layer.Tile({
-    title: 'None',
-    type: 'base',
-    visible: false 
+  title: 'None',
+  type: 'base',
+  visible: false
 });
 
 //asignando por defecto la plantilla de Open Street Map...
-var osmTile = new ol.layer.Tile ({
-    title: 'Open Street Map',
-    visible: true,
-    type: 'base',
-    source: new ol.source.OSM()
+var osmTile = new ol.layer.Tile({
+  title: 'Open Street Map',
+  visible: true,
+  type: 'base',
+  source: new ol.source.OSM()
 });
 
 //map.addLayer(osmTile);
 var baseGroup = new ol.layer.Group({
-    title:'Base Maps',
-    fold: true,
-    layers: [osmTile, noneTile]
+  title: 'Base Maps',
+  fold: true,
+  layers: [osmTile, noneTile]
 });
 map.addLayer(baseGroup);
 
@@ -43,26 +43,26 @@ map.addLayer(baseGroup);
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo:
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
-    title: "Ñuñoa Manzanas",
-    source: new ol.source.TileWMS({
-        url: 'http://localhost:8080/geoserver/cartosag/wms',
-        params: {'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true},
-        serverType: 'geoserver',
-        visible: true
-    })
-    
+  title: "Ñuñoa Manzanas",
+  source: new ol.source.TileWMS({
+    url: 'http://localhost:8080/geoserver/cartosag/wms',
+    params: { 'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true },
+    serverType: 'geoserver',
+    visible: true
+  })
+
 });
 //map.addLayer(AVANCE_MUESTREOTile); esta sentencia permite mostrar por defecto la capa que queremos desplegar, en este la de AVANCE_MUESTREO
 
 //Capa de buffer de la semana 26...
 var BUFFERS26Tile = new ol.layer.Tile({
-    title: "Capturas",
-    source: new ol.source.TileWMS({
-        url: 'http://localhost:8080/geoserver/cartosag/wms',
-        params: {'LAYERS': 'cartosag:BUFFER S26', 'TILED': true},
-        serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
-        visible: true
-    })
+  title: "Capturas",
+  source: new ol.source.TileWMS({
+    url: 'http://localhost:8080/geoserver/cartosag/wms',
+    params: { 'LAYERS': 'cartosag:BUFFER S26', 'TILED': true },
+    serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
+    visible: true
+  })
 });
 //map.addLayer(BUFFERS26Tile);
 
@@ -71,24 +71,24 @@ var BUFFERS26Tile = new ol.layer.Tile({
 //--------------------------------------------------------------------------------------------------------------
 
 var overlayGroup = new ol.layer.Group({
-    title:'Overlays',
-    fold: true,
-    layers: [AVANCE_MUESTREOTile,BUFFERS26Tile]
+  title: 'Overlays',
+  fold: true,
+  layers: [AVANCE_MUESTREOTile, BUFFERS26Tile]
 });
 map.addLayer(overlayGroup);
- 
+
 
 
 //---------------------------------------------------------------------------------------------------------------------
 //Añadiendo Conmutador de capas:
 
 var layerSwitcher = new ol.control.LayerSwitcher({
-    activationMode: 'click',
-    startActive: false,
-    groupSelectedStyle: 'children'
+  activationMode: 'click',
+  startActive: false,
+  groupSelectedStyle: 'children'
 });
 
-map.addControl(layerSwitcher); 
+map.addControl(layerSwitcher);
 
 //Metodo de despliegue de coordenadas del tutorial:   NO FUNCIONAL!
 // var mousePosition = new ol.control.mousePosition({
@@ -107,11 +107,11 @@ var coordinatesElement = document.createElement('div');
 coordinatesElement.className = 'mouse-coordinates';
 document.body.appendChild(coordinatesElement);
 
-map.on('pointermove', function(event) {
-    var coordinates = ol.proj.toLonLat(event.coordinate, 'EPSG:4326');
-    var lon = coordinates[0].toFixed(6);
-    var lat = coordinates[1].toFixed(6);
-    coordinatesElement.innerHTML = 'Lat(Y):' + lat + '||Lon(X):' + lon;
+map.on('pointermove', function (event) {
+  var coordinates = ol.proj.toLonLat(event.coordinate, 'EPSG:4326');
+  var lon = coordinates[0].toFixed(6);
+  var lat = coordinates[1].toFixed(6);
+  coordinatesElement.innerHTML = 'Lat(Y):' + lat + '||Lon(X):' + lon;
 });
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -120,8 +120,8 @@ map.on('pointermove', function(event) {
 
 var scaleControl = new ol.control.ScaleLine({
 
-    bar: true,
-    text: true
+  bar: true,
+  text: true
 
 });
 
@@ -130,28 +130,28 @@ map.addControl(scaleControl);
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //Creando variables para despliegue de ventanas de bienvenida para el usuario...
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-window.addEventListener('DOMContentLoaded', function() {
-    var popup = document.querySelector('.popup');
-    var acceptButton = document.querySelector('.popup .accept-button');
-    var skipButton = document.querySelector('.popup .skip-button');
-    var welcomePopup = document.querySelector('.welcome-popup');
-    var welcomeAcceptButton = document.querySelector('.welcome-popup .accept-button');
-  
-    acceptButton.addEventListener('click', function() {
-      // Redirigir al navegador de Microsoft Edge
-      window.location.href = 'microsoft-edge:https://sagcartogob2023.netlify.app/'; // Cambia esta URL por la que desees abrir en Microsoft Edge
-    });
-  
-    skipButton.addEventListener('click', function() {
-      popup.style.display = 'none';
-      welcomePopup.style.display = 'block';
-    });
-  
-    welcomeAcceptButton.addEventListener('click', function() {
-      welcomePopup.style.display = 'none';
-    });
-  
-    popup.style.display = 'block';
+window.addEventListener('DOMContentLoaded', function () {
+  var popup = document.querySelector('.popup');
+  var acceptButton = document.querySelector('.popup .accept-button');
+  var skipButton = document.querySelector('.popup .skip-button');
+  var welcomePopup = document.querySelector('.welcome-popup');
+  var welcomeAcceptButton = document.querySelector('.welcome-popup .accept-button');
+
+  acceptButton.addEventListener('click', function () {
+    // Redirigir al navegador de Microsoft Edge
+    window.location.href = 'microsoft-edge:https://sagcartogob2023.netlify.app/'; // Cambia esta URL por la que desees abrir en Microsoft Edge
+  });
+
+  skipButton.addEventListener('click', function () {
+    popup.style.display = 'none';
+    welcomePopup.style.display = 'block';
+  });
+
+  welcomeAcceptButton.addEventListener('click', function () {
+    welcomePopup.style.display = 'none';
+  });
+
+  popup.style.display = 'block';
 });
 
 
@@ -173,7 +173,7 @@ var popup = new ol.Overlay({
 });
 map.addOverlay(popup);
 
-closer.onclick = function() {
+closer.onclick = function () {
   popup.setPosition(undefined);
   closer.blur();
   return false;
@@ -210,8 +210,8 @@ closer.onclick = function() {
 //               '</table>';
 //             content.innerHTML = tableHTML;
 //             popup.setPosition(evt.coordinate);
-            
-            
+
+
 //             container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
 
 //           }
@@ -233,7 +233,7 @@ closer.onclick = function() {
 var homeButton = document.createElement('button');
 homeButton.innerHTML = '<img src="resources/images/home-2.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 homeButton.className = 'myButton';
-homeButton.id= 'homeButton';
+homeButton.id = 'homeButton';
 
 var homeElement = document.createElement('div');
 homeElement.className = 'homeButtonDiv';
@@ -243,9 +243,9 @@ var homeControl = new ol.control.Control({
   element: homeElement
 })
 
-homeButton.addEventListener("click", ()=>{
+homeButton.addEventListener("click", () => {
   location.href = "index.html";
-}) 
+})
 
 map.addControl(homeControl);
 
@@ -258,7 +258,7 @@ map.addControl(homeControl);
 var fsButton = document.createElement('button');
 fsButton.innerHTML = '<img src="resources/images/fullscreen.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 fsButton.className = 'myButton';
-fsButton.id= 'fsButton';
+fsButton.id = 'fsButton';
 
 
 var fsElement = document.createElement('div');
@@ -269,15 +269,15 @@ var fsControl = new ol.control.Control({
   element: fsElement
 })
 
-fsButton.addEventListener("click",() =>{
+fsButton.addEventListener("click", () => {
   var mapEle = document.getElementById("map");
-  if(mapEle.requestFullscreen){
+  if (mapEle.requestFullscreen) {
     mapEle.requestFullscreen();
-  } else if (mapEle.msRequestFullscreen){
+  } else if (mapEle.msRequestFullscreen) {
     mapEle.requestFullscreen();
-  } else if (mapEle.mozRequestFullscreen){
+  } else if (mapEle.mozRequestFullscreen) {
     mapEle.mozRequestFullscreen();
-  } else if(mapEle.webkitRequestFullscreen){
+  } else if (mapEle.webkitRequestFullscreen) {
     mapEle.webkitRequestFullscreen();
   }
 })
@@ -291,7 +291,7 @@ map.addControl(fsControl);
 var featureInfoButton = document.createElement('button');
 featureInfoButton.innerHTML = '<img src="resources/images/infopopup.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 featureInfoButton.className = 'myButton';
-featureInfoButton.id ='featureInfoButton';
+featureInfoButton.id = 'featureInfoButton';
 
 var featureInfoElement = document.createElement('div');
 featureInfoElement.className = 'featureInfoDiv';
@@ -302,55 +302,55 @@ var featureInfoControl = new ol.control.Control({
 })
 
 var featureInfoFlag = false;
-featureInfoButton.addEventListener("click", ()=>{
+featureInfoButton.addEventListener("click", () => {
   featureInfoButton.classList.toggle('clicked');
   featureInfoFlag = !featureInfoFlag;
 })
 
 map.addControl(featureInfoControl);
 
-map.on('singleclick',function(evt){
-  if(featureInfoFlag){
+map.on('singleclick', function (evt) {
+  if (featureInfoFlag) {
     content.innerHTML = '';
-  var resolution = map.getView().getResolution();
+    var resolution = map.getView().getResolution();
 
-  var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
-    evt.coordinate,
-    resolution,
-    map.getView().getProjection().getCode(),
-    {
-      'INFO_FORMAT': 'application/json',
-      'propertyName': 'area,grilla,sector,id_manza,porc_avan,inter_avan'
-    }
-  );
+    var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
+      evt.coordinate,
+      resolution,
+      map.getView().getProjection().getCode(),
+      {
+        'INFO_FORMAT': 'application/json',
+        'propertyName': 'area,grilla,sector,id_manza,porc_avan,inter_avan'
+      }
+    );
 
     //colocando campos en una tabla:
     if (url) {
-        $.getJSON(url, function(data) {
-          var feature = data.features[0];
-          if (feature) {
-            var props = feature.properties;
-            var tableHTML =
-              '<table class="popup-table">' +
-              '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
-              '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
-              '<tr><th>Sector </th><td>' + props.sector + '</td></tr>' +
-              '<tr><th>ID Manza </th><td>' + props.id_manza + '</td></tr>' +
-              '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '%</td></tr>' +
-              '<tr><th>Intervalo </th><td>' + props.inter_avan + '</td></tr>' +
-              '</table>';
-            content.innerHTML = tableHTML;
-            popup.setPosition(evt.coordinate);
-            
-            
-            container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+      $.getJSON(url, function (data) {
+        var feature = data.features[0];
+        if (feature) {
+          var props = feature.properties;
+          var tableHTML =
+            '<table class="popup-table">' +
+            '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
+            '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
+            '<tr><th>Sector </th><td>' + props.sector + '</td></tr>' +
+            '<tr><th>ID Manza </th><td>' + props.id_manza + '</td></tr>' +
+            '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '%</td></tr>' +
+            '<tr><th>Intervalo </th><td>' + props.inter_avan + '</td></tr>' +
+            '</table>';
+          content.innerHTML = tableHTML;
+          popup.setPosition(evt.coordinate);
 
-          }
-        });
-      } else {
-        popup.setPosition(undefined);
-        container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
-      }
+
+          container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+        }
+      });
+    } else {
+      popup.setPosition(undefined);
+      container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+    }
   }
 })
 
@@ -361,7 +361,7 @@ map.on('singleclick',function(evt){
 var lengthButton = document.createElement('button');
 lengthButton.innerHTML = '<img src="resources/images/length.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 lengthButton.className = 'myButton';
-lengthButton.id ='lengthButton';
+lengthButton.id = 'lengthButton';
 
 var lengthElement = document.createElement('div');
 lengthElement.className = 'lengthButtonDiv';
@@ -377,7 +377,7 @@ lengthButton.addEventListener("click", () => {
   lengthButton.classList.toggle('clicked');
   lengthFlag = !lengthFlag;
   document.getElementById("map").style.cursor = "default";
-  if(lengthFlag){
+  if (lengthFlag) {
     map.removeInteraction(draw);
     addInteraction('LineString');
   } else {
@@ -395,7 +395,7 @@ map.addControl(lengthControl);
 var areaButton = document.createElement('button');
 areaButton.innerHTML = '<img src="resources/images/area.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 areaButton.className = 'myButton';
-areaButton.id ='areaButton';
+areaButton.id = 'areaButton';
 
 var areaElement = document.createElement('div');
 areaElement.className = 'areaDiv';
@@ -411,7 +411,7 @@ areaButton.addEventListener("click", () => {
   areaButton.classList.toggle('clicked');
   areaFlag = !areaFlag;
   document.getElementById("map").style.cursor = "default";
-  if(areaFlag){
+  if (areaFlag) {
     map.removeInteraction(draw);
     addInteraction('Polygon');
   } else {
@@ -512,14 +512,14 @@ function addInteraction(intType) {
     /** @type {string} */
     var helpMsg = 'Click para comenzar a dibujar!';
 
-    if(sketch){
+    if (sketch) {
       var geom = sketch.getGeometry();
       //if (geom instanceof ol.geom.Polygon){
       //  helpMsg = continuePolygonMsg;
       //} else if (geom instanceof ol.geom.LineString){
       //  helpMsg = continueLineMsg;
       //}
-    
+
     }
     // helpTooltipElement.innerHTML = helpMsg;
     // helpTooltipElement.setPosition(evt.coordinate);
@@ -543,17 +543,17 @@ function addInteraction(intType) {
       if (geom instanceof ol.geom.Polygon) {
         output = formatArea(geom);
         tooltipCoord = geom.getInteriorPoint().getCoordinates();
-        
-      } else if (geom instanceof ol.geom.LineString){
+
+      } else if (geom instanceof ol.geom.LineString) {
         output = formatLength(geom);
-        tooltipCoord = geom.getLastCoordinate(); 
+        tooltipCoord = geom.getLastCoordinate();
       }
       measureTooltipElement.innerHTML = output;
       measureTooltip.setPosition(tooltipCoord);
-    });  
+    });
   });
 
-  draw.on('drawend', function() {
+  draw.on('drawend', function () {
     measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
     measureTooltip.setOffset([0, -7]);
     //unset sketch
@@ -580,8 +580,8 @@ var helpTooltip;
 /**
  * creates  a new help tooltip element 
  */
-function createHelpTooltip(){
-  if(helpTooltipElement){
+function createHelpTooltip() {
+  if (helpTooltipElement) {
     helpTooltipElement.parentNode.removeChild(helpTooltipElement);
   }
   helpTooltipElement = document.createElement('div');
@@ -611,8 +611,8 @@ var measureTooltipElement;
  */
 var measureTooltip;
 
-function createMeasureTooltip(){
-  if(measureTooltipElement){
+function createMeasureTooltip() {
+  if (measureTooltipElement) {
     measureTooltipElement.parentNode.removeChild(measureTooltipElement);
   }
   measureTooltipElement = document.createElement('div');
@@ -651,14 +651,14 @@ var formatLength = function (line) {
  */
 
 
-var formatArea = function (polygon){
+var formatArea = function (polygon) {
   var area = ol.sphere.getArea(polygon);
   var output;
 
-  if(area > 10000){
+  if (area > 10000) {
     output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km<sup>2</sup>';
-  }else{
-    output = Math.round(area * 100) / 100 +' '+'m<sup>2</sup>';
+  } else {
+    output = Math.round(area * 100) / 100 + ' ' + 'm<sup>2</sup>';
   }
   return output;
 }
@@ -694,7 +694,7 @@ function handleZoomButtonClick(button, interaction) {
 //ZOOM IN:
 var zoomInInteraction = new ol.interaction.DragBox();
 
-zoomInInteraction.on('boxend', function() {
+zoomInInteraction.on('boxend', function () {
   var zoomInExtent = zoomInInteraction.getGeometry().getExtent();
   map.getView().fit(zoomInExtent);
 });
@@ -724,11 +724,11 @@ ziButton.addEventListener("click", () => {
 //ZOOM OUT:
 var zoomOutInteraction = new ol.interaction.DragBox();
 
-zoomOutInteraction.on('boxend', function() {
+zoomOutInteraction.on('boxend', function () {
   var zoomOutExtent = zoomOutInteraction.getGeometry().getExtent();
   map.getView().setCenter(ol.extent.getCenter(zoomOutExtent));
 
-  mapView.setZoom(mapView.getZoom() -1)
+  mapView.setZoom(mapView.getZoom() - 1)
 });
 
 var zoButton = document.createElement('button');
@@ -777,34 +777,34 @@ qryButton.addEventListener('click', () => {
   qryButton.classList.toggle('clicked');
   qryFlag = !qryFlag;
   document.getElementById("map").style.cursor = "default";
-  if(qryFlag){
-    if(geojson){
+  if (qryFlag) {
+    if (geojson) {
       geojson.getSource().clear();
       map.removeLayer(geojson);
     }
 
-    if(featureOverlay){
+    if (featureOverlay) {
       featureOverlay.getSource().clear();
       map.removeLayer(featureOverlay);
     }
-    
+
     document.getElementById("attQueryDiv").style.display = "block";
 
     bolIdentify = false;
 
     addMapLayerList();
 
-  }else {
-    
+  } else {
+
     document.getElementById("attQueryDiv").style.display = "none";
     document.getElementById("attListDiv").style.display = "none";
 
-    if(geojson){
+    if (geojson) {
       geojson.getSource().clear();
       map.removeLayer(geojson);
     }
 
-    if(featureOverlay) {
+    if (featureOverlay) {
       featureOverlay.getSource().clear();
       map.removeLayer(featureOverlay);
     }
@@ -828,7 +828,7 @@ function addMapLayerList() {
         $(xml).find('FeatureType').each(function () {
           $(this).find('Name').each(function () {
             var value = $(this).text();
-            select.append("<option class='ddindent' value='" + value + "'>"+"</option>");
+            select.append("<option class='ddindent' value='" + value + "'>" + "</option>");
           });
         });
       }
@@ -839,11 +839,11 @@ function addMapLayerList() {
 $(function () {
   document.getElementById("selectLayer").onchange = function () {
     var select = document.getElementById("selectAttribute");
-    while (select.options.length >0) {
+    while (select.options.length > 0) {
       select.remove(0);
     }
     var value_layer = $(this).val();
-    $(document).ready(function (){
+    $(document).ready(function () {
       $.ajax({
         type: "GET",
         url: "http://localhost:8080/geoserver/wfs?service=WFS&request=DescribeFeatureType&version=1.1.0&typeName=" + value_layer,
@@ -853,19 +853,88 @@ $(function () {
           //var title = $(xml).find('xsd\\:complexType').attr('name');
           // alert(title);
           select.append("<option class='ddindent' value=''></option>");
-          $(xml).find('xsd\\:sequence').each( function () {
-            
+          $(xml).find('xsd\\:sequence').each(function () {
+
             $(this).find('xsd\\:element').each(function () {
               var value = $(this).attr('name');
               //alert(value);
-              var type = $(this)=     //<------ CODIGO PENDIENTE!!!
-            })
-          })
+              var type = $(this).attr('name');
+              //alert(type);
+              if (value != 'geom' && value != 'the_geom') {
+                select.append("<option class='ddindent' value='" + type + "'>" + value + "</option>");
+              }
+            });
+          });
         }
-      })
-    })
+      });
+    });
   }
-})
+  document.getElementById("selectAtributte").onchange = function () {
+    var operator = document.getElementsByName("selectOperator");
+    while (operator.options.length > 0) {
+      operator.remove(0);
+    }
+
+    var value_type = $(this).val();
+    // alert(value_type);
+    var value_attribute = $('#selectAttribute options:selected').text();
+    operator.options[0] = new Option('Select operator', "");
+
+    if (value_type == 'xsd:short' || value_type == 'xsd:int' || value_type == 'xsd:double') {
+      var operator1 = document.getElementById("selectOperator");
+      operator1.options[1] = new Option('Greater than', '>');
+      operator1.options[2] = new Option('Less than', '<');
+      operator1.options[3] = new Option('Equal to', '=');
+    }
+    else if (value_type == 'xsd:string') {
+      var operator1 = document.getElementById("selectOperator");
+      operator1.options[1] = new Option('Like', 'Like');
+      operator1.options[2] = new Option('Equal to', '=');
+    }
+  }
+
+  document.getElementById('attQryRun').onclick = function () {
+    map.set("isLoading", "YES");
+
+    if (featureOverlay) {
+      featureOverlay.getSource().clear();
+      map.removeLayer(featureOverlay);
+    }
+
+    var layer = document.getElementById("slectLayer");
+    var attribute = document.getElementById("selectAttribute");
+    var operator = document.getElementById("selectOperator");
+    var txt = document.getElementById("enterValue");
+
+    if (layer.options.selectedIndex == 0) {
+      alert("Select Layer"); //Seleccione Layer
+    } else if (attribute.option.selectedIndex == -1) {
+      alert("Select Attribute"); //Seleccione Atributo
+    } else if (operator.options.selectedIndex <= 0) {
+      alert("Select Operator"); //Seleccione Operador
+    } else if (txt.value.length <= 0) {
+      alert("Enter Value"); //Ingrese Valor
+    } else {
+      var value_layer = layer.options[layer.selectedIndex].value;
+      var value_attribute = attribute.options[attribute.selectedIndex].value;
+      var value_operator = operator.options[operator.selectedIndex].value;
+      var value_txt = txt.value;
+      if (value_operator == 'Like') {
+        value_txt = "%25" + value_txt + "%25";
+      }
+      else {
+        value_txt = value_txt; //observacion: Es probable que una véz que se quiera levantar el servicion a un hosting, la estructura de los links deba cambiar, para que deje de ser localhost:8080...
+      }
+      var url = "http://localhost:8080/geoserver/cartosag/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json"
+      //console.log(url);
+      newaddGeoJsonToMap(url);
+      newpopulateQueryTable(url);
+      setTimeout(function () { newaddRowHandlers(url); }, 300)
+      map.set("isLoading", 'NO');
+    }
+  }
+});
+
 
 
 
