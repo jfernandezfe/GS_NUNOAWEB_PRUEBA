@@ -816,6 +816,57 @@ qryButton.addEventListener('click', () => {
 map.addControl(qryControl);
 
 
+function addMapLayerList() {
+  $(document).ready(function () {
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/geoserver/wfs?request=getCapabilities",
+      dataType: "xml",
+      success: function (xml) {
+        var select = $('#selectLayer');
+        select.append("<option class='ddindent' value=''></option>");
+        $(xml).find('FeatureType').each(function () {
+          $(this).find('Name').each(function () {
+            var value = $(this).text();
+            select.append("<option class='ddindent' value='" + value + "'>"+"</option>");
+          });
+        });
+      }
+    });
+  });
+};
+
+$(function () {
+  document.getElementById("selectLayer").onchange = function () {
+    var select = document.getElementById("selectAttribute");
+    while (select.options.length >0) {
+      select.remove(0);
+    }
+    var value_layer = $(this).val();
+    $(document).ready(function (){
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/geoserver/wfs?service=WFS&request=DescribeFeatureType&version=1.1.0&typeName=" + value_layer,
+        dataType: "xml",
+        succes: function (xml) {
+          var select = $('#selectAttribute');
+          //var title = $(xml).find('xsd\\:complexType').attr('name');
+          // alert(title);
+          select.append("<option class='ddindent' value=''></option>");
+          $(xml).find('xsd\\:sequence').each( function () {
+            
+            $(this).find('xsd\\:element').each(function () {
+              var value = $(this).attr('name');
+              //alert(value);
+              var type = $(this)=     //<------ CODIGO PENDIENTE!!!
+            })
+          })
+        }
+      })
+    })
+  }
+})
+
 
 
 
