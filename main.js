@@ -761,7 +761,7 @@ var featureOverlay;
 var qryButton = document.createElement('button');
 qryButton.innerHTML = '<img src="resources/images/query.png" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 qryButton.className = 'myButton';
-qryButton.id = 'qryButton';
+qryButton.id = 'qryButton';  
 
 var qryElement = document.createElement('div');
 qryElement.className = 'myButtonDiv';
@@ -769,10 +769,13 @@ qryElement.appendChild(qryButton);
 
 var qryControl = new ol.control.Control({
   element: qryElement
+
 })
 
+// hasta aquí bien...
+//--------------------------------------------------------------------------------------------
 var qryFlag = false;
-qryButton.addEventListener('click', () => {
+qryButton.addEventListener("click", () => {
   //disableOtherInteraction('lengthButton');
   qryButton.classList.toggle('clicked');
   qryFlag = !qryFlag;
@@ -788,6 +791,7 @@ qryButton.addEventListener('click', () => {
       map.removeLayer(featureOverlay);
     }
 
+    //document.getElementById("map"),style.cursor = "default";
     document.getElementById("attQueryDiv").style.display = "block";
 
     bolIdentify = false;
@@ -795,7 +799,7 @@ qryButton.addEventListener('click', () => {
     addMapLayerList();
 
   } else {
-
+    //document.getElementById("map").style.cursor = "default";
     document.getElementById("attQueryDiv").style.display = "none";
     document.getElementById("attListDiv").style.display = "none";
 
@@ -814,7 +818,8 @@ qryButton.addEventListener('click', () => {
 })
 
 map.addControl(qryControl);
-
+ //hasta aqui todo en orden... ------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
 
 function addMapLayerList() {
   $(document).ready(function () {
@@ -835,6 +840,9 @@ function addMapLayerList() {
     });
   });
 };
+//codigo revisado sin problemas----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
+
 
 $(function () {
   document.getElementById("selectLayer").onchange = function () {
@@ -843,12 +851,12 @@ $(function () {
       select.remove(0);
     }
     var value_layer = $(this).val();
-    $(document).ready(function () {
+    $(document).ready(function () { 
       $.ajax({
         type: "GET",
-        url: "http://localhost:8080/geoserver/wfs?service=WFS&request=DescribeFeatureType&version=1.1.0&typeName=" + value_layer,
+        url: "http://localhost:8080/geoserver/wfs?service=WFS&request=DescribeFeatureType&version=1.0.0&typeName=" + value_layer,
         dataType: "xml",
-        succes: function (xml) {
+        success: function (xml) {    //se corrige succes a SUCCESS
           var select = $('#selectAttribute');
           //var title = $(xml).find('xsd\\:complexType').attr('name');
           // alert(title);
@@ -858,26 +866,26 @@ $(function () {
             $(this).find('xsd\\:element').each(function () {
               var value = $(this).attr('name');
               //alert(value);
-              var type = $(this).attr('name');
+              var type = $(this).attr('type'); //estaba escrito 'name' , se ha reemplazado por type.
               //alert(type);
               if (value != 'geom' && value != 'the_geom') {
                 select.append("<option class='ddindent' value='" + type + "'>" + value + "</option>");
               }
             });
           });
-        }
+        }                           //todo en orden y corregido hasta esta parte del codigo....
       });
     });
   }
-  document.getElementById("selectAtributte").onchange = function () {
-    var operator = document.getElementsByName("selectOperator");
-    while (operator.options.length > 0) {
+  document.getElementById("selectAttributte").onchange = function () {
+    var operator = document.getElementsById("selectOperator");
+    while (operator.options.length > 0) {  //segun chat gpt puede ser operator.length....
       operator.remove(0);
     }
 
     var value_type = $(this).val();
     // alert(value_type);
-    var value_attribute = $('#selectAttribute options:selected').text();
+    var value_attribute = $('#selectAttribute option:selected').text(); //estaba escrito options, se ha corregido por OPTION
     operator.options[0] = new Option('Select operator', "");
 
     if (value_type == 'xsd:short' || value_type == 'xsd:int' || value_type == 'xsd:double') {
@@ -891,7 +899,7 @@ $(function () {
       operator1.options[1] = new Option('Like', 'Like');
       operator1.options[2] = new Option('Equal to', '=');
     }
-  }
+  } // codigo corregido y evaluado, todo en orden...
 
   document.getElementById('attQryRun').onclick = function () {
     map.set("isLoading", "YES");
@@ -901,14 +909,14 @@ $(function () {
       map.removeLayer(featureOverlay);
     }
 
-    var layer = document.getElementById("slectLayer");
+    var layer = document.getElementById("selectLayer"); //Estaba escrito slect, se reemplaza por 'select...'
     var attribute = document.getElementById("selectAttribute");
     var operator = document.getElementById("selectOperator");
     var txt = document.getElementById("enterValue");
 
     if (layer.options.selectedIndex == 0) {
       alert("Select Layer"); //Seleccione Layer
-    } else if (attribute.option.selectedIndex == -1) {
+    } else if (attribute.options.selectedIndex == -1) {
       alert("Select Attribute"); //Seleccione Atributo
     } else if (operator.options.selectedIndex <= 0) {
       alert("Select Operator"); //Seleccione Operador
@@ -916,7 +924,7 @@ $(function () {
       alert("Enter Value"); //Ingrese Valor
     } else {
       var value_layer = layer.options[layer.selectedIndex].value;
-      var value_attribute = attribute.options[attribute.selectedIndex].value;
+      var value_attribute = attribute.options[attribute.selectedIndex].text; // se reemplaza por .text
       var value_operator = operator.options[operator.selectedIndex].value;
       var value_txt = txt.value;
       if (value_operator == 'Like') {
@@ -924,19 +932,22 @@ $(function () {
       }
       else {
         value_txt = value_txt; //observacion: Es probable que una véz que se quiera levantar el servicion a un hosting, la estructura de los links deba cambiar, para que deje de ser localhost:8080...
-      }
-      var url = "http://localhost:8080/geoserver/cartosag/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json"
+      }                                                                         //1.1.0 o 1.1.3 ...
+      var url = "http://localhost:8080/geoserver/cartosag/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json"
       //console.log(url);
       newaddGeoJsonToMap(url);
       newpopulateQueryTable(url);
-      setTimeout(function () { newaddRowHandlers(url); }, 300)
+      setTimeout(function () { newaddRowHandlers(url); }, 300);
       map.set("isLoading", 'NO');
     }
-  }
+  }  // codigo en orden y corregido...
 });
 
-function newaddGeoJsonToMap(url){
-  if(geojson){
+
+
+function newaddGeoJsonToMap(url) {
+
+  if (geojson) {
     geojson.getSource().clear();
     map.removeLayer(geojson);
   }
@@ -955,43 +966,48 @@ function newaddGeoJsonToMap(url){
         color: '#FFFF00'
       })
     })
-  });
+  }); //todo en orden hasta aca...
 
   geojson = new ol.layer.Vector({
     source: new ol.source.Vector({
       url: url,
-      format: new ol.format.getJSON()
+      format: new ol.format.GeoJSON()  
     }),
     style: style,
 
   });
 
-  geojson.getSource().on('addfeature' , function(){
-    map.getView.fit(
+  geojson.getSource().on('addfeature', function () {
+    map.getView().fit(
       geojson.getSource().getExtent(),
-      {duration: 1590, size: map.getSize(), maxZoom: 21 }
+      { duration: 1590, size: map.getSize(), maxZoom: 21 }
     );
   });
   map.addLayer(geojson);
 
-};
+}; //codigo ordenado y corregido...
+
+//--------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------
 
 function newpopulateQueryTable(url) {
 
-  if (typeof attributePanel !== 'undefined' ){
+  if (typeof attributePanel !== 'undefined') {
     if (attributePanel.parentElement !== null) {
-      attributePanel.closer();
-    }   
+      attributePanel.close();
+    }
   }
-  $.getJSON(url, function (data){
+  $.getJSON(url, function (data) {
     var col = [];
     col.push('id');
-    for (var i = 0; i <data.features.length; i++){
-      for (var key in data.features[i].properties){
+    for (var i = 0; i < data.features.length; i++) {
+
+      for (var key in data.features[i].properties) {
+
         if (col.indexOf(key) === -1) {
           col.push(key);
         }
-      }
+      }  //todo en orden y corregido hasta aquí...
     }
 
     var table = document.createElement("table");
@@ -1009,15 +1025,15 @@ function newpopulateQueryTable(url) {
     }
 
     // ADD JSON DATA TO THE TABLE AS ROWS.
-    for (var i = 0; i < data.features.length; i++){
+    for (var i = 0; i < data.features.length; i++) {
       tr = table.insertRow(-1);
-      for (var j = 0; j < col.length; j++){
+      for (var j = 0; j < col.length; j++) {
         var tabCell = tr.insertCell(-1);
-        if(j == 0 ){ tablCell.innerHTML = data.features[i]['id']; }
+        if (j == 0) { tabCell.innerHTML = data.features[i]['id']; }
         else {
           tabCell.innerHTML = data.features[i].properties[col[j]];
         }
-      }
+      }   //codigo corregido y en orden....
     }
 
 
@@ -1034,8 +1050,8 @@ function newpopulateQueryTable(url) {
 
     document.getElementById("attListDiv").style.display = "block";
 
+  }); // corregido y revisado.....
 
-  });
 
   var highlightStyle = new ol.style.Style({
     fill: new ol.style.Fill({
@@ -1051,7 +1067,7 @@ function newpopulateQueryTable(url) {
         color: '#FF00FF'
       })
     })
-  });
+  }); 
 
 
   var featureOverlay = new ol.layer.Vector({
@@ -1060,9 +1076,12 @@ function newpopulateQueryTable(url) {
     style: highlightStyle
   });
 
-};
+}; //codigo ordenado y corregido...
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
-function newaddRowHandlers() {
+
+function newaddRowHandlers() {  //según chat gpt debe ir la variable 'url' dentro del parentesis '(url)'
   var table = document.getElementById("attQryTable");
   var rows = document.getElementById("attQryTable").rows;
   var heads = table.getElementsByTagName('th');
@@ -1070,18 +1089,18 @@ function newaddRowHandlers() {
   for (var i = 0; i < heads.length; i++) {
     //Take each cell
     var head = heads[i];
-    if(head.innerHTML == 'id'){
+    if (head.innerHTML == 'id') {
       col_no = i + 1;
     }
 
   }
-  for (i = 0; i < rows.length; i++){
+  for (i = 0; i < rows.length; i++) {
     rows[i].onclick = function () {
       return function () {
         featureOverlay.getSource().clear();
 
         $(function () {
-          $('#attQryTable td').each(function () {
+          $("#attQryTable td").each(function () {
             $(this).parent("tr").css("background-color", "white");
           });
         });
@@ -1089,7 +1108,7 @@ function newaddRowHandlers() {
         var id = cell.innerHTML;
         $(document).ready(function () {
           $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
-            if($(this).text() == id){
+            if ($(this).text() == id) {
               $(this).parent("tr").css("background-color", "#d1d8e2");
             }
           });
@@ -1099,28 +1118,24 @@ function newaddRowHandlers() {
 
 
         for (i = 0; i < features.length; i++) {
-          if (features[i].getId() == id){
+          if (features[i].getId() == id) {
             featureOverlay.getSource().addFeature(feature[i]);
 
-            featureOverlay.getSource().on('addFeature' , function (){
+            featureOverlay.getSource().on('addFeature', function () {
               map.getView().fit(
                 featureOverlay.getSource().getExtent(),
-                { duration: 1500, size: map.getSize(), maxZoom: 24}
+                { duration: 1500, size: map.getSize(), maxZoom: 24 }
               );
             });
-
           }
         }
       };
-    }(rows[i]);  // cierre de arreglos "row"
-
-    
+    }(rows[i]);
   }
-
 }
 
-
+//codigo revizado y corregido completamente....
 
 // end attribute query....
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
