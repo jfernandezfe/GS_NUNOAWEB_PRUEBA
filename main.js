@@ -933,7 +933,7 @@ $(function () {
       else {
         value_txt = value_txt; //observacion: Es probable que una véz que se quiera levantar el servicion a un hosting, la estructura de los links deba cambiar, para que deje de ser localhost:8080...
       }                                                                         //1.1.0 o 1.1.3 ...
-      var url = "http://localhost:8080/geoserver/cartosag/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json"
+      var url = "http://localhost:8080/geoserver/cartosag/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json"
       //console.log(url);
       newaddGeoJsonToMap(url);
       newpopulateQueryTable(url);
@@ -1081,7 +1081,7 @@ function newpopulateQueryTable(url) {
 //--------------------------------------------------------------------------------------------------
 
 
-function newaddRowHandlers() {  //según chat gpt debe ir la variable 'url' dentro del parentesis '(url)'
+function newaddRowHandlers(url) {  //según chat gpt debe ir la variable 'url' dentro del parentesis '(url)'
   var table = document.getElementById("attQryTable");
   var rows = document.getElementById("attQryTable").rows;
   var heads = table.getElementsByTagName('th');
