@@ -43,7 +43,7 @@ map.addLayer(baseGroup);
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo:
 var AVANCE_MUESTREOTile = new ol.layer.Tile({
-  title: "Ñuñoa Manzanas",
+  title: "AVANCE MUESTREO",
   source: new ol.source.TileWMS({
     url: 'http://localhost:8080/geoserver/cartosag/wms',
     params: { 'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true },
@@ -56,7 +56,7 @@ var AVANCE_MUESTREOTile = new ol.layer.Tile({
 
 //Capa de buffer de la semana 26...
 var BUFFERS26Tile = new ol.layer.Tile({
-  title: "Capturas",
+  title: "BUFFERS26",
   source: new ol.source.TileWMS({
     url: 'http://localhost:8080/geoserver/cartosag/wms',
     params: { 'LAYERS': 'cartosag:BUFFER S26', 'TILED': true },
@@ -821,6 +821,26 @@ map.addControl(qryControl);
  //hasta aqui todo en orden... ------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------
 
+// function addMapLayerList() {
+//   $(document).ready(function () {
+//     $.ajax({
+//       type: "GET",
+//       url: "http://localhost:8080/geoserver/wfs?request=getCapabilities",
+//       dataType: "xml",
+//       success: function (xml) {
+//         var select = $('#selectLayer');
+//         select.append("<option class='ddindent' value=''></option>");
+//         $(xml).find('FeatureType').each(function () {
+//           $(this).find('Name').each(function () {
+//             var value = $(this).text();
+//             select.append("<option class='ddindent' value='" + value + "'>" + "</option>");
+//           });
+//         });
+//       }
+//     });
+//   });
+// };
+//versión chat gpt funcional que muestra toda la lista de capas:
 function addMapLayerList() {
   $(document).ready(function () {
     $.ajax({
@@ -833,13 +853,19 @@ function addMapLayerList() {
         $(xml).find('FeatureType').each(function () {
           $(this).find('Name').each(function () {
             var value = $(this).text();
-            select.append("<option class='ddindent' value='" + value + "'>" + "</option>");
+            // Agregar el nombre de la capa dentro de la etiqueta de opción
+            select.append("<option class='ddindent' value='" + value + "'>" + value + "</option>");
           });
         });
       }
     });
   });
 };
+
+
+
+
+
 //codigo revisado sin problemas----------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
 

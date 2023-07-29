@@ -33,7 +33,7 @@ html, body{
     transform: translateX(-50%);
 } */
 
-/* Metodo alternatio de despliegue de coordenadas */
+/* Metodo alternativo de despliegue de coordenadas */
 .mouse-coordinates {
     position: absolute;
     top: auto;
