@@ -81,7 +81,7 @@ var BUFFERS26Tile = new ol.layer.Tile({
 //--------------------------------------------------------------------------------------------------------------
 
 var overlayGroup = new ol.layer.Group({
-  title: 'Overlays',
+  title: 'Campaña Ñuñoa',
   fold: true,
   layers: [AVANCE_MUESTREOTile, BUFFERS26Tile]
 });
