@@ -30,11 +30,21 @@ var osmTile = new ol.layer.Tile({
   source: new ol.source.OSM()
 });
 
+var googleSatelliteTile = new ol.layer.Tile({
+  title: 'Google Satellite',
+  visible: false, // Puedes establecerlo en true si quieres que aparezca al cargar el mapa
+  type: 'base',
+  source: new ol.source.XYZ({
+    url: 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
+  })
+});
+
+
 //map.addLayer(osmTile);
 var baseGroup = new ol.layer.Group({
   title: 'Base Maps',
   fold: true,
-  layers: [osmTile, noneTile]
+  layers: [osmTile, googleSatelliteTile, noneTile]
 });
 map.addLayer(baseGroup);
 
@@ -90,15 +100,6 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 
 map.addControl(layerSwitcher);
 
-//Metodo de despliegue de coordenadas del tutorial:   NO FUNCIONAL!
-// var mousePosition = new ol.control.mousePosition({
-//     className: 'mousePosition',
-//     projection: 'EPSG:4326',
-//     coordinateFormat: function(coordinate){return ol.coordinate.format(coordinate,'{y} , {x}',6);}
-// });
-// map.addControl(mousePosition); 
-
-
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //Metodo alternativo de despliegue de coordenadas hecho por chat gpt:
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -140,6 +141,7 @@ window.addEventListener('DOMContentLoaded', function () {
   acceptButton.addEventListener('click', function () {
     // Redirigir al navegador de Microsoft Edge
     window.location.href = 'microsoft-edge:https://sagcartogob2023.netlify.app/'; // Cambia esta URL por la que desees abrir en Microsoft Edge
+    // window.location.href = 'microsoft-edge:https://d13b-163-247-40-209.ngrok-free.app/';
   });
 
   skipButton.addEventListener('click', function () {
@@ -881,13 +883,13 @@ $(function () {
     var value_type = $(this).val();
 
     var value_attribute = $('#selectAttribute').val(); // Corrección de chat GPT
-    operator.options[0] = new Option('Select operator', "");
+    operator.options[0] = new Option('Seleccione Operador', "");
 
     if (value_type == 'xsd:short' || value_type == 'xsd:int' || value_type == 'xsd:double') {
       var operator1 = document.getElementById("selectOperator");
-      operator1.options[1] = new Option('Greater than', '>');
-      operator1.options[2] = new Option('Less than', '<');
-      operator1.options[3] = new Option('Equal to', '=');
+      operator1.options[1] = new Option('Mayor que', '>');
+      operator1.options[2] = new Option('Menor que', '<');
+      operator1.options[3] = new Option('Igual a', '=');
     }
     else if (value_type == 'xsd:string') {
       var operator1 = document.getElementById("selectOperator");
@@ -910,13 +912,13 @@ $(function () {
     var txt = document.getElementById("enterValue");
 
     if (layer.options.selectedIndex == 0) {
-      alert("Select Layer"); //Seleccione Layer
+      alert("Seleccion Capa"); //Seleccione Layer
     } else if (attribute.options.selectedIndex == -1) {
-      alert("Select Attribute"); //Seleccione Atributo
+      alert("Seleccione Atributo"); //Seleccione Atributo
     } else if (operator.options.selectedIndex <= 0) {
-      alert("Select Operator"); //Seleccione Operador
+      alert("Seleccione Operador"); //Seleccione Operador
     } else if (txt.value.length <= 0) {
-      alert("Enter Value"); //Ingrese Valor
+      alert("Ingrese Valor"); //Ingrese Valor
     } else {
       var value_layer = layer.options[layer.selectedIndex].value;
       var value_attribute = attribute.options[attribute.selectedIndex].text; // Se reemplaza por .text
@@ -967,7 +969,7 @@ function newaddGeoJsonToMap(url) {
   geojson.getSource().on('addfeature', function () {
     map.getView().fit(
       geojson.getSource().getExtent(),
-      { duration: 1590, size: map.getSize(), maxZoom: 21 }
+      { duration: 1590, size: map.getSize(), maxZoom: 18 }
     );
   });
   map.addLayer(geojson);
