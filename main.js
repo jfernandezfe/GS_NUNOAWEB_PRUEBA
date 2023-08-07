@@ -52,23 +52,24 @@ map.addLayer(baseGroup);
 //OBSERVACIÓN: SE HA CAMBIA EL SERVIDOR DE GEOSERVER A SU VERSION 2.23.1 
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo:
-var AVANCE_MUESTREOTile = new ol.layer.Tile({
-  title: "AVANCE MUESTREO",
+var MANZANAS_ÑUÑOATile = new ol.layer.Tile({
+  title: "MANZANAS ÑUÑOA",
   source: new ol.source.TileWMS({
     url: 'http://localhost:8080/geoserver/cartosag/wms',
-    params: { 'LAYERS': 'cartosag:AVANCE_MUESTREO', 'TILED': true },
+    params: { 'LAYERS': 'cartosag:MANZANAS_ÑUÑOA', 'TILED': true },
     serverType: 'geoserver',
     visible: true
   })
 
 });
-//map.addLayer(AVANCE_MUESTREOTile); esta sentencia permite mostrar por defecto la capa que queremos desplegar, en este la de AVANCE_MUESTREO
+//map.addLayer(MANZANAS_ÑUÑOATile); esta sentencia permite mostrar por defecto la capa que queremos desplegar, en este la de MANZANAS_ÑUÑOA
 
 //Capa de buffer de la semana 26...
 var BUFFERS26Tile = new ol.layer.Tile({
   title: "BUFFERS26",
   source: new ol.source.TileWMS({
-    url: 'http://localhost:8080/geoserver/cartosag/wms',
+    // url: 'http://localhost:8080/geoserver/cartosag/wms',
+    url:'https://e74f-163-247-40-209.ngrok-free.app/geoserver/cartosag/wms?service=WMS&version=1.1.0&request=GetMap&layers=cartosag%3ABUFFER%20S26&bbox=-70.59552871100011%2C-33.45861831973096%2C-70.56623767102128%2C-33.43127433312246&width=768&height=716&srs=EPSG%3A4326&styles=&format=application/openlayers',
     params: { 'LAYERS': 'cartosag:BUFFER S26', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
     visible: true
@@ -76,14 +77,33 @@ var BUFFERS26Tile = new ol.layer.Tile({
 });
 //map.addLayer(BUFFERS26Tile);
 
+var MANZANAS_LAVEG_RECOTile = new ol.layer.Tile({
+  title: "MANZANAS LAVEG_RECO",
+  source: new ol.source.TileWMS({
+    url: 'http://localhost:8080/geoserver/cartosag/wms',
+    params: { 'LAYERS': 'cartosag:MANZANAS_LAVEG_RECO', 'TILED': true },
+    serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
+    visible: true
+  })
+});
+
+var CAP_LVRES32Tile = new ol.layer.Tile({
+  title: "CAP_LVRES32",
+  source: new ol.source.TileWMS({
+    url: 'http://localhost:8080/geoserver/cartosag/wms',
+    params: { 'LAYERS': 'cartosag:CAP_LVRES32', 'TILED': true },
+    serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
+    visible: true
+  })
+});
 //---------------------------------------------------------------------------------------------------------------------
 //Creando grupos de layers para panel layerswitcher 
 //--------------------------------------------------------------------------------------------------------------
 
 var overlayGroup = new ol.layer.Group({
-  title: 'Campaña Ñuñoa',
+  title: 'Capas',
   fold: true,
-  layers: [AVANCE_MUESTREOTile, BUFFERS26Tile]
+  layers: [MANZANAS_LAVEG_RECOTile,CAP_LVRES32Tile, MANZANAS_ÑUÑOATile, BUFFERS26Tile]
 });
 map.addLayer(overlayGroup);
 
@@ -158,7 +178,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-//manipulando popups para despliegue de información de capa AVANCE_MUESTREO----------------------------------------------------------------
+//manipulando popups para despliegue de información de capa MANZANAS_ÑUÑOA----------------------------------------------------------------
 //version de chat gpt: 
 
 
@@ -185,7 +205,7 @@ closer.onclick = function () {
 //   content.innerHTML = '';
 //   var resolution = map.getView().getResolution();
 
-//   var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
+//   var url = MANZANAS_ÑUÑOATile.getSource().getFeatureInfoUrl(
 //     evt.coordinate,
 //     resolution,
 //     map.getView().getProjection().getCode(),
@@ -283,7 +303,7 @@ fsButton.addEventListener("click", () => {
 map.addControl(fsControl);
 
 //--------------------------------------------------------------------------------------------------------------
-//programando botton que activa popups con información (featureInfo)       -----------------------------------------------------------------
+//programando botton que activa popups con información (featureInfo)  PARA CAPA AVANCE DE MUESTREO     -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
 var featureInfoButton = document.createElement('button');
@@ -312,7 +332,7 @@ map.on('singleclick', function (evt) {
     content.innerHTML = '';
     var resolution = map.getView().getResolution();
 
-    var url = AVANCE_MUESTREOTile.getSource().getFeatureInfoUrl(
+    var url = MANZANAS_ÑUÑOATile.getSource().getFeatureInfoUrl(
       evt.coordinate,
       resolution,
       map.getView().getProjection().getCode(),
