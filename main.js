@@ -68,11 +68,10 @@ var MANZANAS_ÑUÑOATile = new ol.layer.Tile({
 var BUFFERS26Tile = new ol.layer.Tile({
   title: "BUFFERS26",
   source: new ol.source.TileWMS({
-    // url: 'http://localhost:8080/geoserver/cartosag/wms',
-    url:'https://e74f-163-247-40-209.ngrok-free.app/geoserver/cartosag/wms?service=WMS&version=1.1.0&request=GetMap&layers=cartosag%3ABUFFER%20S26&bbox=-70.59552871100011%2C-33.45861831973096%2C-70.56623767102128%2C-33.43127433312246&width=768&height=716&srs=EPSG%3A4326&styles=&format=application/openlayers',
+    url: 'http://localhost:8080/geoserver/cartosag/wms',
     params: { 'LAYERS': 'cartosag:BUFFER S26', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
-    visible: true
+    visible: false
   })
 });
 //map.addLayer(BUFFERS26Tile);
@@ -87,15 +86,15 @@ var MANZANAS_LAVEG_RECOTile = new ol.layer.Tile({
   })
 });
 
-var CAP_LVRES32Tile = new ol.layer.Tile({
-  title: "CAP_LVRES32",
-  source: new ol.source.TileWMS({
-    url: 'http://localhost:8080/geoserver/cartosag/wms',
-    params: { 'LAYERS': 'cartosag:CAP_LVRES32', 'TILED': true },
-    serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
-    visible: true
-  })
-});
+// var CAP_LVRES32Tile = new ol.layer.Tile({
+//   title: "CAP_LVRES32",
+//   source: new ol.source.TileWMS({
+//     url: 'http://localhost:8080/geoserver/cartosag/wms',
+//     params: { 'LAYERS': 'cartosag:CAP_LVRES32', 'TILED': true },
+//     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
+//     visible: true
+//   })
+// });
 //---------------------------------------------------------------------------------------------------------------------
 //Creando grupos de layers para panel layerswitcher 
 //--------------------------------------------------------------------------------------------------------------
@@ -103,7 +102,7 @@ var CAP_LVRES32Tile = new ol.layer.Tile({
 var overlayGroup = new ol.layer.Group({
   title: 'Capas',
   fold: true,
-  layers: [MANZANAS_LAVEG_RECOTile,CAP_LVRES32Tile, MANZANAS_ÑUÑOATile, BUFFERS26Tile]
+  layers: [MANZANAS_LAVEG_RECOTile, MANZANAS_ÑUÑOATile, BUFFERS26Tile]
 });
 map.addLayer(overlayGroup);
 
@@ -354,8 +353,54 @@ map.on('singleclick', function (evt) {
             '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
             '<tr><th>Sector </th><td>' + props.sector + '</td></tr>' +
             '<tr><th>ID Manza </th><td>' + props.id_manza + '</td></tr>' +
-            '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '%</td></tr>' +
+            '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '</td></tr>' +
             '<tr><th>Intervalo </th><td>' + props.inter_avan + '</td></tr>' +
+            '</table>';
+          content.innerHTML = tableHTML;
+          popup.setPosition(evt.coordinate);
+
+
+          container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+        }
+      });
+    } else {
+      popup.setPosition(undefined);
+      container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+    }
+  }
+})
+
+//creando tabla para capa MANZANAS_LAVEG_RECO
+
+map.on('singleclick', function (evt) {
+  if (featureInfoFlag) {
+    content.innerHTML = '';
+    var resolution = map.getView().getResolution();
+
+    var url = MANZANAS_LAVEG_RECOTile.getSource().getFeatureInfoUrl(
+      evt.coordinate,
+      resolution,
+      map.getView().getProjection().getCode(),
+      {
+        'INFO_FORMAT': 'application/json',
+        'propertyName': 'id_manza,area,nom_com,campaña,grilla'
+      }
+    );
+
+    //colocando campos en una tabla:
+    if (url) {
+      $.getJSON(url, function (data) {
+        var feature = data.features[0];
+        if (feature) {
+          var props = feature.properties;
+          var tableHTML =
+            '<table class="popup-table">' +
+            '<tr><th>ID Manzana </th><td>' + props.id_manza + '</td></tr>' +
+            '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
+            '<tr><th>Comuna </th><td>' + props.nom_com + '</td></tr>' +
+            '<tr><th>Campaña </th><td>' + props.campaña + '</td></tr>' +
+            '<tr><th>Grilla </th><td>' + props.grilla + '%</td></tr>' +
             '</table>';
           content.innerHTML = tableHTML;
           popup.setPosition(evt.coordinate);
