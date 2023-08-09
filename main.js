@@ -400,7 +400,7 @@ map.on('singleclick', function (evt) {
             '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
             '<tr><th>Comuna </th><td>' + props.nom_com + '</td></tr>' +
             '<tr><th>Campaña </th><td>' + props.campaña + '</td></tr>' +
-            '<tr><th>Grilla </th><td>' + props.grilla + '%</td></tr>' +
+            '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
             '</table>';
           content.innerHTML = tableHTML;
           popup.setPosition(evt.coordinate);
