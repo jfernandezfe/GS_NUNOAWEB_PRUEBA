@@ -431,7 +431,7 @@ map.on('singleclick', function (evt) {
       map.getView().getProjection().getCode(),
       {
         'INFO_FORMAT': 'application/json',
-        'propertyName': 'area,grilla,sector,id_manza,porc_avan,inter_avan'
+        'propertyName': 'area,Grilla,Sector,ID_MANZA,PORC_AVAN,INTER_AVAN'
       }
     );
 
@@ -444,11 +444,11 @@ map.on('singleclick', function (evt) {
           var tableHTML =
             '<table class="popup-table">' +
             '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
-            '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
-            '<tr><th>Sector </th><td>' + props.sector + '</td></tr>' +
-            '<tr><th>ID Manza </th><td>' + props.id_manza + '</td></tr>' +
-            '<tr><th>Porcentaje Avance </th><td>' + props.porc_avan + '</td></tr>' +
-            '<tr><th>Intervalo </th><td>' + props.inter_avan + '</td></tr>' +
+            '<tr><th>Grilla </th><td>' + props.Grilla + '</td></tr>' +
+            '<tr><th>Sector </th><td>' + props.Sector + '</td></tr>' +
+            '<tr><th>ID Manza </th><td>' + props.ID_MANZA + '</td></tr>' +
+            '<tr><th>Porcentaje Avance </th><td>' + props.PORC_AVAN + '</td></tr>' +
+            '<tr><th>Intervalo </th><td>' + props.INTER_AVAN + '</td></tr>' +
             '</table>';
           content.innerHTML = tableHTML;
           popup.setPosition(evt.coordinate);
@@ -1013,7 +1013,7 @@ $(function () {
     $(document).ready(function () {
       $.ajax({
         type: "GET",
-        url: "https://sagcartogob.com/geoserver/wfs?service=WFS&request=DescribeFeatureType&version=1.0.0&typeName=" + value_layer,
+        url: "https://sagcartogob.com/geoserver/wfs?service=WFS&request=DescribeFeatureType&version=1.1.0&typeName=" + value_layer,
         dataType: "xml",
         success: function (xml) { // Se corrige success a SUCCESS
           var select = $('#selectAttribute');
