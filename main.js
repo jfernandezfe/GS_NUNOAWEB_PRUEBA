@@ -246,6 +246,43 @@ closer.onclick = function () {
 //programando home button         -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
+//Activando boton con comandos "alt + H"
+// Añade un event listener para detectar las teclas presionadas
+// document.addEventListener('keydown', (event) => {
+//   // Verifica si se presionó "Alt" y "H" al mismo tiempo
+//   if (event.altKey && event.key === 'h') {
+//     // Activa la función "Home"
+//     location.href = "index.html";
+//   }
+// });
+
+// var homeButton = document.createElement('button');
+// homeButton.innerHTML = '<img src="resources/images/home-2.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+// homeButton.className = 'myButton';
+// homeButton.id = 'homeButton';
+
+// var homeElement = document.createElement('div');
+// homeElement.className = 'homeButtonDiv';
+// homeElement.appendChild(homeButton);
+
+// var homeControl = new ol.control.Control({
+//   element: homeElement
+// })
+
+// homeButton.addEventListener("click", () => {
+//   location.href = "index.html";
+// })
+
+// map.addControl(homeControl);
+
+// Añade un event listener para detectar las teclas presionadas
+document.addEventListener('keydown', (event) => {
+  // Verifica si se presionó "Alt" y "H" al mismo tiempo
+  if (event.altKey && event.key === 'h') {
+    // Activa la función "Home"
+    location.href = "index.html";
+  }
+});
 
 var homeButton = document.createElement('button');
 homeButton.innerHTML = '<img src="resources/images/home-2.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
@@ -258,25 +295,54 @@ homeElement.appendChild(homeButton);
 
 var homeControl = new ol.control.Control({
   element: homeElement
-})
+});
 
-homeButton.addEventListener("click", () => {
+// Agregar burbuja al botón
+var homeTooltip = document.createElement('div');
+homeTooltip.className = 'tooltip';
+homeTooltip.textContent = 'Home (Alt + H)';
+document.body.appendChild(homeTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+homeButton.addEventListener('mouseover', () => {
+  homeTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+homeButton.addEventListener('mouseout', () => {
+  homeTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+homeButton.addEventListener('mousemove', (event) => {
+  homeTooltip.style.left = event.clientX + 40 + 'px';
+  homeTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
+
+homeButton.addEventListener('click', () => {
   location.href = "index.html";
-})
+});
 
 map.addControl(homeControl);
+
 
 
 //--------------------------------------------------------------------------------------------------------------
 //programando fullscreen button         -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
+//comando para activar boton de pantalla completa (alt + P)
+document.addEventListener('keydown', (event) => {
+  // Verifica si se presionó "Alt" y "p" al mismo tiempo
+  if (event.altKey && event.key === 'p') {
+    toggleFullscreen();
+  }
+});
 
 var fsButton = document.createElement('button');
 fsButton.innerHTML = '<img src="resources/images/fullscreen.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 fsButton.className = 'myButton';
 fsButton.id = 'fsButton';
-
 
 var fsElement = document.createElement('div');
 fsElement.className = 'fsButtonDiv';
@@ -284,22 +350,50 @@ fsElement.appendChild(fsButton);
 
 var fsControl = new ol.control.Control({
   element: fsElement
-})
+});
 
-fsButton.addEventListener("click", () => {
-  var mapEle = document.getElementById("map");
+// Agregar burbuja al botón
+var fsTooltip = document.createElement('div');
+fsTooltip.className = 'tooltip';
+fsTooltip.textContent = 'Pantalla Completa (Alt + P)';
+document.body.appendChild(fsTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+fsButton.addEventListener('mouseover', () => {
+  fsTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+fsButton.addEventListener('mouseout', () => {
+  fsTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+fsButton.addEventListener('mousemove', (event) => {
+  fsTooltip.style.left = event.clientX + 70 + 'px';
+  fsTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
+
+fsButton.addEventListener('click', () => {
+  toggleFullscreen();
+});
+
+map.addControl(fsControl);
+
+// Función para alternar el modo de pantalla completa
+function toggleFullscreen() {
+  var mapEle = document.getElementById('map');
   if (mapEle.requestFullscreen) {
     mapEle.requestFullscreen();
   } else if (mapEle.msRequestFullscreen) {
-    mapEle.requestFullscreen();
+    mapEle.msRequestFullscreen();
   } else if (mapEle.mozRequestFullscreen) {
     mapEle.mozRequestFullscreen();
   } else if (mapEle.webkitRequestFullscreen) {
     mapEle.webkitRequestFullscreen();
   }
-})
+}
 
-map.addControl(fsControl);
 
 //--------------------------------------------------------------------------------------------------------------
 //programando botton que activa popups con información (featureInfo)  PARA CAPA AVANCE DE MUESTREO     -----------------------------------------------------------------
@@ -446,7 +540,7 @@ lengthButton.addEventListener("click", () => {
   } else {
     map.removeInteraction(draw);
     source.clear();
-    const elements = document.getElementsByClassName("ol-tooltip ol-tooltip-static");
+    const elements = document.getElementsByClassName("ol-homeTooltip ol-homeTooltip-static");
     while (elements.length > 0) elements[0].remove();
   }
 })
@@ -480,7 +574,7 @@ areaButton.addEventListener("click", () => {
   } else {
     map.removeInteraction(draw);
     source.clear();
-    const elements = document.getElementsByClassName("ol-tooltip ol-tooltip-static");
+    const elements = document.getElementsByClassName("ol-homeTooltip ol-homeTooltip-static");
     while (elements.length > 0) elements[0].remove(); //no debiese ser por el area?
     // while (elements.area > 0) elements[0].remove(); //se toma el componente de length???
   }
@@ -554,8 +648,8 @@ function addInteraction(intType) {
   });
   map.addInteraction(draw);
 
-  createMeasureTooltip();
-  createHelpTooltip();
+  createMeasurehomeTooltip();
+  createHelphomeTooltip();
 
 
   /**
@@ -584,9 +678,9 @@ function addInteraction(intType) {
       //}
 
     }
-    // helpTooltipElement.innerHTML = helpMsg;
-    // helpTooltipElement.setPosition(evt.coordinate);
-    // helpTooltipElement.classList.remove('hidden');
+    // helphomeTooltipElement.innerHTML = helpMsg;
+    // helphomeTooltipElement.setPosition(evt.coordinate);
+    // helphomeTooltipElement.classList.remove('hidden');
   };
 
   map.on('pointermove', pointerMoveHandler);
@@ -597,7 +691,7 @@ function addInteraction(intType) {
     sketch = evt.feature;
 
     /**@type {import("../src/ol/coordinate.js").Coordinate|undefined} */
-    var tooltipCoord = evt.coordinate;
+    var homeTooltipCoord = evt.coordinate;
 
     //listener = sketch.getGeometry().on('change', function (evt) {
     sketch.getGeometry().on('change', function (evt) {
@@ -605,87 +699,87 @@ function addInteraction(intType) {
       var output;
       if (geom instanceof ol.geom.Polygon) {
         output = formatArea(geom);
-        tooltipCoord = geom.getInteriorPoint().getCoordinates();
+        homeTooltipCoord = geom.getInteriorPoint().getCoordinates();
 
       } else if (geom instanceof ol.geom.LineString) {
         output = formatLength(geom);
-        tooltipCoord = geom.getLastCoordinate();
+        homeTooltipCoord = geom.getLastCoordinate();
       }
-      measureTooltipElement.innerHTML = output;
-      measureTooltip.setPosition(tooltipCoord);
+      measurehomeTooltipElement.innerHTML = output;
+      measurehomeTooltip.setPosition(homeTooltipCoord);
     });
   });
 
   draw.on('drawend', function () {
-    measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
-    measureTooltip.setOffset([0, -7]);
+    measurehomeTooltipElement.className = 'ol-homeTooltip ol-homeTooltip-static';
+    measurehomeTooltip.setOffset([0, -7]);
     //unset sketch
     sketch = null;
     //Desactive la información sobre herramientas para poder crear una nueva...
-    measureTooltipElement = null;
-    createMeasureTooltip();
+    measurehomeTooltipElement = null;
+    createMeasurehomeTooltip();
     //ol.Observable.unByKey(Listener);
   });
 }
 
 /**
- * the help tooltip element
+ * the help homeTooltip element
  * @type {HTMLElement}
  */
-var helpTooltipElement;
+var helphomeTooltipElement;
 
 /**
- * the help tooltip element
+ * the help homeTooltip element
  * @type {Overlay}
  */
-var helpTooltip;
+var helphomeTooltip;
 
 /**
- * creates  a new help tooltip element 
+ * creates  a new help homeTooltip element 
  */
-function createHelpTooltip() {
-  if (helpTooltipElement) {
-    helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+function createHelphomeTooltip() {
+  if (helphomeTooltipElement) {
+    helphomeTooltipElement.parentNode.removeChild(helphomeTooltipElement);
   }
-  helpTooltipElement = document.createElement('div');
-  helpTooltipElement.className = 'ol-tooltip hidden';
-  helpTooltip = new ol.Overlay({
-    element: helpTooltipElement,
+  helphomeTooltipElement = document.createElement('div');
+  helphomeTooltipElement.className = 'ol-homeTooltip hidden';
+  helphomeTooltip = new ol.Overlay({
+    element: helphomeTooltipElement,
     offset: [15, 0],
     positioning: 'center-left',
 
   });
-  map.addOverlay(helpTooltip);
+  map.addOverlay(helphomeTooltip);
 }
 
 map.getViewport().addEventListener('mouseout', function () {
-  helpTooltipElement.classList.add('hidden');
+  helphomeTooltipElement.classList.add('hidden');
 });
 
 /**
- * the measure tooltip element.
+ * the measure homeTooltip element.
  * @type {HTMLElement}
  */
-var measureTooltipElement;
+var measurehomeTooltipElement;
 
 /**
  * overlay to show the measurement.
  * @type {Overlay}
  */
-var measureTooltip;
+var measurehomeTooltip;
 
-function createMeasureTooltip() {
-  if (measureTooltipElement) {
-    measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+function createMeasurehomeTooltip() {
+  if (measurehomeTooltipElement) {
+    measurehomeTooltipElement.parentNode.removeChild(measurehomeTooltipElement);
   }
-  measureTooltipElement = document.createElement('div');
-  measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
-  measureTooltip = new ol.Overlay({
-    element: measureTooltipElement,
+  measurehomeTooltipElement = document.createElement('div');
+  measurehomeTooltipElement.className = 'ol-homeTooltip ol-homeTooltip-measure';
+  measurehomeTooltip = new ol.Overlay({
+    element: measurehomeTooltipElement,
     offset: [0, -15],
     positioning: 'bottom-center',
   });
-  map.addOverlay(measureTooltip);
+  map.addOverlay(measurehomeTooltip);
 }
 
 /**
