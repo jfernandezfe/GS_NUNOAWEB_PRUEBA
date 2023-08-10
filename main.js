@@ -68,10 +68,10 @@ var MANZANAS_ÑUÑOATile = new ol.layer.Tile({
 var BUFFERS26Tile = new ol.layer.Tile({
   title: "BUFFERS26",
   source: new ol.source.TileWMS({
-    url: 'http://localhost:8080/geoserver/cartosag/wms',
-    params: { 'LAYERS': 'cartosag:BUFFER S26', 'TILED': true },
+    url: 'https://sagcartogob.com/geoserver/ASCIINUNOA.qgs/wms',
+    params: { 'LAYERS': 'ASCIINUNOA.qgs:BUFFER_S26', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
-    visible: false
+    visible: true
   })
 });
 //map.addLayer(BUFFERS26Tile);
