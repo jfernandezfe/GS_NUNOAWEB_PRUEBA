@@ -72,6 +72,7 @@ var BUFFERS26Tile = new ol.layer.Tile({
     params: { 'LAYERS': 'ASCIINUNOA.qgs:BUFFER_S26', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
     visible: true
+    
   })
 });
 //map.addLayer(BUFFERS26Tile);
@@ -1089,7 +1090,7 @@ $(function () {
       else {
         value_txt = value_txt; // Observación: Es probable que una vez que se quiera levantar el servicio a un hosting, la estructura de los enlaces deba cambiar, para que deje de ser localhost:8080...
       } // 1.1.0 o 1.1.3 ...
-      var url = "https://sagcartogob.com/geoserver/cartosag/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json";
+      var url = "https://sagcartogob.com/geoserver/ASCIINUNOA.qgs/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json";
       newaddGeoJsonToMap(url);
       newpopulateQueryTable(url);
       setTimeout(function () { newaddRowHandlers(url); }, 300);
