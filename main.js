@@ -1220,87 +1220,39 @@ function newpopulateQueryTable(url) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
-// function newaddRowHandlers(url) {
-//   var table = document.getElementById("attQryTable");
-//   var rows = document.getElementById("attQryTable").rows;
-//   var heads = table.getElementsByTagName('th');
-//   var col_no;
-//   for (var i = 0; i < heads.length; i++) {
-//     // Take each cell
-//     var head = heads[i];
-//     if (head.innerHTML == 'id') {
-//       col_no = i + 1;
-//     }
-//   }
-//   for (i = 0; i < rows.length; i++) {
-//     rows[i].onclick = function () {
-//       return function () {
-//         $(function () {
-//           $("#attQryTable td").each(function () {
-//             $(this).parent("tr").css("background-color", "white");
-//           });
-//         });
-//         var cell = this.cells[col_no - 1];
-//         var id = cell.innerHTML;
-//         $(document).ready(function () {
-//           $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
-//             if ($(this).text() == id) {
-//               $(this).parent("tr").css("background-color", "#d1d8e2");
-//             }
-//           });
-//         });
-
-//         var features = geojson.getSource().getFeatures();
-
-//         for (i = 0; i < features.length; i++) {
-//           if (features[i].getId() == id) {
-//             featureOverlay.getSource().clear();
-//             featureOverlay.getSource().addFeature(features[i]);
-//           }
-//         }
-//       };
-//     }(rows[i]);
-//   }
-
-//   // Agregar el evento de 'addFeature' fuera del bucle
-//   featureOverlay.getSource().on('addfeature', function () {
-//     map.getView().fit(
-//       featureOverlay.getSource().getExtent(),
-//       { duration: 1500, size: map.getSize(), maxZoom: 24 }
-//     );
-//   });
-// }
-//corrección de chatgpt de la función newaddrowhandlers
 function newaddRowHandlers(url) {
   var table = document.getElementById("attQryTable");
   var rows = document.getElementById("attQryTable").rows;
   var heads = table.getElementsByTagName('th');
   var col_no;
-
   for (var i = 0; i < heads.length; i++) {
+    // Take each cell
     var head = heads[i];
     if (head.innerHTML == 'id') {
       col_no = i + 1;
     }
   }
-
-  for (var i = 0; i < rows.length; i++) {
-    rows[i].onclick = function (row) {
+  for (i = 0; i < rows.length; i++) {
+    rows[i].onclick = function () {
       return function () {
         $(function () {
           $("#attQryTable td").each(function () {
-            $(this).parent("tr").removeClass("highlight");
+            $(this).parent("tr").css("background-color", "white");
+          });
+        });
+        var cell = this.cells[col_no - 1];
+        var id = cell.innerHTML;
+        $(document).ready(function () {
+          $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
+            if ($(this).text() == id) {
+              $(this).parent("tr").css("background-color", "#d1d8e2");
+            }
           });
         });
 
-        var idCell = row.cells[col_no - 1];
-        var id = idCell.innerHTML;
-        
-        $(row).addClass("highlight");
-
         var features = geojson.getSource().getFeatures();
 
-        for (var i = 0; i < features.length; i++) {
+        for (i = 0; i < features.length; i++) {
           if (features[i].getId() == id) {
             featureOverlay.getSource().clear();
             featureOverlay.getSource().addFeature(features[i]);
@@ -1310,6 +1262,7 @@ function newaddRowHandlers(url) {
     }(rows[i]);
   }
 
+  // Agregar el evento de 'addFeature' fuera del bucle
   featureOverlay.getSource().on('addfeature', function () {
     map.getView().fit(
       featureOverlay.getSource().getExtent(),
@@ -1317,6 +1270,53 @@ function newaddRowHandlers(url) {
     );
   });
 }
+//corrección de chatgpt de la función newaddrowhandlers
+// function newaddRowHandlers(url) {
+//   var table = document.getElementById("attQryTable");
+//   var rows = document.getElementById("attQryTable").rows;
+//   var heads = table.getElementsByTagName('th');
+//   var col_no;
+
+//   for (var i = 0; i < heads.length; i++) {
+//     var head = heads[i];
+//     if (head.innerHTML == 'id') {
+//       col_no = i + 1;
+//     }
+//   }
+
+//   for (var i = 0; i < rows.length; i++) {
+//     rows[i].onclick = function (row) {
+//       return function () {
+//         $(function () {
+//           $("#attQryTable td").each(function () {
+//             $(this).parent("tr").removeClass("highlight");
+//           });
+//         });
+
+//         var idCell = row.cells[col_no - 1];
+//         var id = idCell.innerHTML;
+        
+//         $(row).addClass("highlight");
+
+//         var features = geojson.getSource().getFeatures();
+
+//         for (var i = 0; i < features.length; i++) {
+//           if (features[i].getId() == id) {
+//             featureOverlay.getSource().clear();
+//             featureOverlay.getSource().addFeature(features[i]);
+//           }
+//         }
+//       };
+//     }(rows[i]);
+//   }
+
+//   featureOverlay.getSource().on('addfeature', function () {
+//     map.getView().fit(
+//       featureOverlay.getSource().getExtent(),
+//       { duration: 1500, size: map.getSize(), maxZoom: 24 }
+//     );
+//   });
+// }
 
 
 // Codigo revisado y corregido completamente...
