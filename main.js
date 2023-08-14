@@ -1196,8 +1196,7 @@ function newpopulateQueryTable(url) {
 
   var highlightStyle = new ol.style.Style({
     fill: new ol.style.Fill({
-      // color: 'rgba(255, 0, 255, 0.3)',
-      color: 'rgb(110, 206, 225, 0.4)',
+      color: 'rgba(255, 0, 255, 0.3)',
     }),
     stroke: new ol.style.Stroke({
       color: '#FF00FF',
