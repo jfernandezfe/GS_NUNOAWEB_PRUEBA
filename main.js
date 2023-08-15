@@ -77,11 +77,11 @@ var BUFFERS26Tile = new ol.layer.Tile({
 });
 //map.addLayer(BUFFERS26Tile);
 
-var MANZANAS_LAVEG_RECOTile = new ol.layer.Tile({
-  title: "MANZANAS LAVEG_RECO",
+var MANZANAS_LV_RECTile = new ol.layer.Tile({
+  title: "MANZANAS LV_REC",
   source: new ol.source.TileWMS({
-    url: 'http://localhost:8080/geoserver/cartosag/wms',
-    params: { 'LAYERS': 'cartosag:MANZANAS_LAVEG_RECO', 'TILED': true },
+    url: 'https://sagcartogob.com/geoserver/ASCIILVRE/wms',
+    params: { 'LAYERS': 'ASCIILVRE:MANZANAS_LV_REC', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
     visible: true
   })
@@ -103,7 +103,7 @@ var MANZANAS_LAVEG_RECOTile = new ol.layer.Tile({
 var overlayGroup = new ol.layer.Group({
   title: 'Capas',
   fold: true,
-  layers: [MANZANAS_LAVEG_RECOTile, MANZANAS_ÑUÑOATile, BUFFERS26Tile]
+  layers: [MANZANAS_LV_RECTile, MANZANAS_ÑUÑOATile, BUFFERS26Tile]
 });
 map.addLayer(overlayGroup);
 
@@ -397,7 +397,7 @@ function toggleFullscreen() {
 
 
 //--------------------------------------------------------------------------------------------------------------
-//programando botton que activa popups con información (featureInfo)  PARA CAPA AVANCE DE MUESTREO     -----------------------------------------------------------------
+//programando botton que activa popups con información (featureInfo)  para las capas almacenadas en geoserver    -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
 var featureInfoButton = document.createElement('button');
@@ -466,14 +466,14 @@ map.on('singleclick', function (evt) {
   }
 })
 
-//creando tabla para capa MANZANAS_LAVEG_RECO
+//creando tabla para capa MANZANAS_LV_REC
 
 map.on('singleclick', function (evt) {
   if (featureInfoFlag) {
     content.innerHTML = '';
     var resolution = map.getView().getResolution();
 
-    var url = MANZANAS_LAVEG_RECOTile.getSource().getFeatureInfoUrl(
+    var url = MANZANAS_LV_RECTile.getSource().getFeatureInfoUrl(
       evt.coordinate,
       resolution,
       map.getView().getProjection().getCode(),
