@@ -479,7 +479,7 @@ map.on('singleclick', function (evt) {
       map.getView().getProjection().getCode(),
       {
         'INFO_FORMAT': 'application/json',
-        'propertyName': 'id_manza,area,nom_com,campaña,grilla'
+        'propertyName': 'ID_MANZA,AREA,NOM_COM,CAMPAÑA,GRILLA'
       }
     );
 
@@ -491,11 +491,11 @@ map.on('singleclick', function (evt) {
           var props = feature.properties;
           var tableHTML =
             '<table class="popup-table">' +
-            '<tr><th>ID Manzana </th><td>' + props.id_manza + '</td></tr>' +
-            '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
-            '<tr><th>Comuna </th><td>' + props.nom_com + '</td></tr>' +
-            '<tr><th>Campaña </th><td>' + props.campaña + '</td></tr>' +
-            '<tr><th>Grilla </th><td>' + props.grilla + '</td></tr>' +
+            '<tr><th>ID Manzana </th><td>' + props.ID_MANZA + '</td></tr>' +
+            '<tr><th>Área </th><td>' + props.AREA + '</td></tr>' +
+            '<tr><th>Comuna </th><td>' + props.NOM_COM + '</td></tr>' +
+            '<tr><th>Campaña </th><td>' + props.CAMPAÑA + '</td></tr>' +
+            '<tr><th>Grilla </th><td>' + props.GRILLA + '</td></tr>' +
             '</table>';
           content.innerHTML = tableHTML;
           popup.setPosition(evt.coordinate);
