@@ -52,50 +52,52 @@ map.addLayer(baseGroup);
 //OBSERVACIÓN: SE HA CAMBIA EL SERVIDOR DE GEOSERVER A SU VERSION 2.23.1 
 //Asignamos layers subidos a nuestro GeoServer a través de su url...
 //Capa de avance de muestreo:
-var MANZANAS_ÑUÑOATile = new ol.layer.Tile({
+var MANZ_NUNOATile = new ol.layer.Tile({
   title: "MANZANAS ÑUÑOA",
   source: new ol.source.TileWMS({
-    url: 'https://sagcartogob.com/geoserver/ASCIINUNOA/wms',
-    params: { 'LAYERS': 'ASCIINUNOA:MANZANAS_ÑUÑOA', 'TILED': true },
+    url: 'https://sagcartogob.com/geoserver/SAG/wms',
+    params: { 'LAYERS': 'SAG:manz_nunoa', 'TILED': true },
     serverType: 'geoserver',
     visible: true
   })
 
 });
-//map.addLayer(MANZANAS_ÑUÑOATile); esta sentencia permite mostrar por defecto la capa que queremos desplegar, en este la de MANZANAS_ÑUÑOA
+//map.addLayer(MANZ_NUNOATile); esta sentencia permite mostrar por defecto la capa que queremos desplegar, en este la de MANZ_NUNOA
 
 //Capa de buffer de la semana 26...
-var BUFFERS26Tile = new ol.layer.Tile({
-  title: "BUFFERS26",
+var CAPTURASTile = new ol.layer.Tile({
+  title: "CAPTURAS",
   source: new ol.source.TileWMS({
-    url: 'https://sagcartogob.com/geoserver/ASCIINUNOA/wms',
-    params: { 'LAYERS': 'ASCIINUNOA:BUFFER_S26', 'TILED': true },
+    url: 'https://sagcartogob.com/geoserver/SAG/wms',
+    params: { 'LAYERS': 'SAG:capturas', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
     visible: true
     
   })
 });
-//map.addLayer(BUFFERS26Tile);
+//map.addLayer(CAPTURASTile);
 
-var MANZANAS_LV_RECTile = new ol.layer.Tile({
+var MANZ_LAVEG_RECOTile = new ol.layer.Tile({
   title: "MANZANAS LV_REC",
   source: new ol.source.TileWMS({
-    url: 'https://sagcartogob.com/geoserver/ASCIILVRE/wms',
-    params: { 'LAYERS': 'ASCIILVRE:MANZANAS_LV_REC', 'TILED': true },
+    url: 'https://sagcartogob.com/geoserver/SAG/wms',
+    params: { 'LAYERS': 'SAG:manz_laveg_reco', 'TILED': true },
     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
     visible: true
   })
 });
 
-// var CAP_LVRES32Tile = new ol.layer.Tile({
-//   title: "CAP_LVRES32",
-//   source: new ol.source.TileWMS({
-//     url: 'http://localhost:8080/geoserver/cartosag/wms',
-//     params: { 'LAYERS': 'cartosag:CAP_LVRES32', 'TILED': true },
-//     serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
-//     visible: true
-//   })
-// });
+var MANZ_PENALOLENTile = new ol.layer.Tile({
+  title: "MANZANAS PEÑALOLEN",
+  source: new ol.source.TileWMS({
+    url: 'https://sagcartogob.com/geoserver/SAG/wms',
+    params: { 'LAYERS': 'SAG:manz_penalolen', 'TILED': true },
+    serverType: 'geoserver', //este campo había sido reemplazado por 'tile', he vuelto a colocar 'geoserver', se pone observación...
+    visible: true
+  })
+});
+
+
 //---------------------------------------------------------------------------------------------------------------------
 //Creando grupos de layers para panel layerswitcher 
 //--------------------------------------------------------------------------------------------------------------
@@ -103,7 +105,7 @@ var MANZANAS_LV_RECTile = new ol.layer.Tile({
 var overlayGroup = new ol.layer.Group({
   title: 'Capas',
   fold: true,
-  layers: [MANZANAS_LV_RECTile, MANZANAS_ÑUÑOATile, BUFFERS26Tile]
+  layers: [MANZ_PENALOLENTile,MANZ_LAVEG_RECOTile, MANZ_NUNOATile, CAPTURASTile]
 });
 map.addLayer(overlayGroup);
 
@@ -178,7 +180,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 //------------------------------------------------------------------------------------------------------------------------------
-//manipulando popups para despliegue de información de capa MANZANAS_ÑUÑOA----------------------------------------------------------------
+//manipulando popups para despliegue de información de capa MANZ_NUNOA----------------------------------------------------------------
 //version de chat gpt: 
 
 
@@ -205,7 +207,7 @@ closer.onclick = function () {
 //   content.innerHTML = '';
 //   var resolution = map.getView().getResolution();
 
-//   var url = MANZANAS_ÑUÑOATile.getSource().getFeatureInfoUrl(
+//   var url = MANZ_NUNOATile.getSource().getFeatureInfoUrl(
 //     evt.coordinate,
 //     resolution,
 //     map.getView().getProjection().getCode(),
@@ -426,7 +428,7 @@ map.on('singleclick', function (evt) {
     content.innerHTML = '';
     var resolution = map.getView().getResolution();
 
-    var url = MANZANAS_ÑUÑOATile.getSource().getFeatureInfoUrl(
+    var url = MANZ_NUNOATile.getSource().getFeatureInfoUrl(
       evt.coordinate,
       resolution,
       map.getView().getProjection().getCode(),
@@ -1000,7 +1002,7 @@ function addMapLayerList() {
   });
 }
 
-// Codigo revisado sin problemas----------------------------------------------------------------------
+// ----------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
 
 
@@ -1090,13 +1092,14 @@ $(function () {
       else {
         value_txt = value_txt; // Observación: Es probable que una vez que se quiera levantar el servicio a un hosting, la estructura de los enlaces deba cambiar, para que deje de ser localhost:8080...
       } // 1.1.0 o 1.1.3 ...
-      var url = "https://sagcartogob.com/geoserver/ASCIINUNOA/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json";
+      var url = "https://sagcartogob.com/geoserver/SAG/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=" + value_layer + "&CQL_FILTER=" + value_attribute + "+" + value_operator + "+'" + value_txt + "'&outputFormat=application/json";
       newaddGeoJsonToMap(url);
       newpopulateQueryTable(url);
       setTimeout(function () { newaddRowHandlers(url); }, 300);
       map.set("isLoading", 'NO');
     }
   } // Codigo en orden y corregido...
+   
 });
 
 function newaddGeoJsonToMap(url) {
@@ -1220,87 +1223,39 @@ function newpopulateQueryTable(url) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
-function newaddRowHandlers(url) {
-  var table = document.getElementById("attQryTable");
-  var rows = document.getElementById("attQryTable").rows;
-  var heads = table.getElementsByTagName('th');
-  var col_no;
-  for (var i = 0; i < heads.length; i++) {
-    // Take each cell
-    var head = heads[i];
-    if (head.innerHTML == 'id') {
-      col_no = i + 1;
-    }
-  }
-  for (i = 0; i < rows.length; i++) {
-    rows[i].onclick = function () {
-      return function () {
-        $(function () {
-          $("#attQryTable td").each(function () {
-            $(this).parent("tr").css("background-color", "white");
-          });
-        });
-        var cell = this.cells[col_no - 1];
-        var id = cell.innerHTML;
-        $(document).ready(function () {
-          $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
-            if ($(this).text() == id) {
-              $(this).parent("tr").css("background-color", "#d1d8e2");
-            }
-          });
-        });
-
-        var features = geojson.getSource().getFeatures();
-
-        for (i = 0; i < features.length; i++) {
-          if (features[i].getId() == id) {
-            featureOverlay.getSource().clear();
-            featureOverlay.getSource().addFeature(features[i]);
-          }
-        }
-      };
-    }(rows[i]);
-  }
-
-  // Agregar el evento de 'addFeature' fuera del bucle
-  featureOverlay.getSource().on('addfeature', function () {
-    map.getView().fit(
-      featureOverlay.getSource().getExtent(),
-      { duration: 1500, size: map.getSize(), maxZoom: 24 }
-    );
-  });
-}
-//corrección de chatgpt de la función newaddrowhandlers
 // function newaddRowHandlers(url) {
 //   var table = document.getElementById("attQryTable");
 //   var rows = document.getElementById("attQryTable").rows;
 //   var heads = table.getElementsByTagName('th');
 //   var col_no;
-
 //   for (var i = 0; i < heads.length; i++) {
+//     // Take each cell
 //     var head = heads[i];
 //     if (head.innerHTML == 'id') {
 //       col_no = i + 1;
 //     }
 //   }
-
-//   for (var i = 0; i < rows.length; i++) {
-//     rows[i].onclick = function (row) {
+//   for (i = 0; i < rows.length; i++) {
+//     rows[i].onclick = function () {
 //       return function () {
 //         $(function () {
 //           $("#attQryTable td").each(function () {
-//             $(this).parent("tr").removeClass("highlight");
+//             $(this).parent("tr").css("background-color", "white");
+//           });
+//         });
+//         var cell = this.cells[col_no - 1];
+//         var id = cell.innerHTML;
+//         $(document).ready(function () {
+//           $("#attQryTable td:nth-child(" + col_no + ")").each(function () {
+//             if ($(this).text() == id) {
+//               $(this).parent("tr").css("background-color", "#d1d8e2");
+//             }
 //           });
 //         });
 
-//         var idCell = row.cells[col_no - 1];
-//         var id = idCell.innerHTML;
-        
-//         $(row).addClass("highlight");
-
 //         var features = geojson.getSource().getFeatures();
 
-//         for (var i = 0; i < features.length; i++) {
+//         for (i = 0; i < features.length; i++) {
 //           if (features[i].getId() == id) {
 //             featureOverlay.getSource().clear();
 //             featureOverlay.getSource().addFeature(features[i]);
@@ -1310,6 +1265,7 @@ function newaddRowHandlers(url) {
 //     }(rows[i]);
 //   }
 
+//   // Agregar el evento de 'addFeature' fuera del bucle
 //   featureOverlay.getSource().on('addfeature', function () {
 //     map.getView().fit(
 //       featureOverlay.getSource().getExtent(),
@@ -1317,10 +1273,57 @@ function newaddRowHandlers(url) {
 //     );
 //   });
 // }
+//corrección de chatgpt de la función newaddrowhandlers
+function newaddRowHandlers(url) {
+  var table = document.getElementById("attQryTable");
+  var rows = document.getElementById("attQryTable").rows;
+  var heads = table.getElementsByTagName('th');
+  var col_no;
+
+  for (var i = 0; i < heads.length; i++) {
+    var head = heads[i];
+    if (head.innerHTML == 'id') {
+      col_no = i + 1;
+    }
+  }
+
+  for (var i = 0; i < rows.length; i++) {
+    rows[i].onclick = function (row) {
+      return function () {
+        $(function () {
+          $("#attQryTable td").each(function () {
+            $(this).parent("tr").removeClass("highlight");
+          });
+        });
+
+        var idCell = row.cells[col_no - 1];
+        var id = idCell.innerHTML;
+        
+        $(row).addClass("highlight");
+
+        var features = geojson.getSource().getFeatures();
+
+        for (var i = 0; i < features.length; i++) {
+          if (features[i].getId() == id) {
+            featureOverlay.getSource().clear();
+            featureOverlay.getSource().addFeature(features[i]);
+          }
+        }
+      };
+    }(rows[i]);
+  }
+
+  featureOverlay.getSource().on('addfeature', function () {
+    map.getView().fit(
+      featureOverlay.getSource().getExtent(),
+      { duration: 1500, size: map.getSize(), maxZoom: 24 }
+    );
+  });
+}
 
 
 // Codigo revisado y corregido completamente...
 
 // End attribute query...
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
