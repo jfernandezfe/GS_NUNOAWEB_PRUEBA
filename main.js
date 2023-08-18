@@ -468,14 +468,14 @@ map.on('singleclick', function (evt) {
   }
 })
 
-//creando tabla para capa MANZANAS_LV_REC
+//creando tabla para capa MANZ_LAVEG_RECOTile
 
 map.on('singleclick', function (evt) {
   if (featureInfoFlag) {
     content.innerHTML = '';
     var resolution = map.getView().getResolution();
 
-    var url = MANZANAS_LV_RECTile.getSource().getFeatureInfoUrl(
+    var url = MANZ_LAVEG_RECOTile.getSource().getFeatureInfoUrl(
       evt.coordinate,
       resolution,
       map.getView().getProjection().getCode(),
@@ -498,6 +498,49 @@ map.on('singleclick', function (evt) {
             '<tr><th>Comuna </th><td>' + props.NOM_COM + '</td></tr>' +
             '<tr><th>Campaña </th><td>' + props.CAMPAÑA + '</td></tr>' +
             '<tr><th>Grilla </th><td>' + props.GRILLA + '</td></tr>' +
+            '</table>';
+          content.innerHTML = tableHTML;
+          popup.setPosition(evt.coordinate);
+
+
+          container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+        }
+      });
+    } else {
+      popup.setPosition(undefined);
+      container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+    }
+  }
+})
+
+//creando capa para capa MANZ_PENALOLENTile
+
+map.on('singleclick', function (evt) {
+  if (featureInfoFlag) {
+    content.innerHTML = '';
+    var resolution = map.getView().getResolution();
+
+    var url = MANZ_PENALOLENTile.getSource().getFeatureInfoUrl(
+      evt.coordinate,
+      resolution,
+      map.getView().getProjection().getCode(),
+      {
+        'INFO_FORMAT': 'application/json',
+        'propertyName': 'ID_MANZA,AREA'
+      }
+    );
+
+    //colocando campos en una tabla:
+    if (url) {
+      $.getJSON(url, function (data) {
+        var feature = data.features[0];
+        if (feature) {
+          var props = feature.properties;
+          var tableHTML =
+            '<table class="popup-table">' +
+            '<tr><th>ID Manzana </th><td>' + props.ID_MANZA + '</td></tr>' +
+            '<tr><th>Área </th><td>' + props.AREA + '</td></tr>' +
             '</table>';
           content.innerHTML = tableHTML;
           popup.setPosition(evt.coordinate);
