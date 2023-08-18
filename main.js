@@ -615,6 +615,15 @@ function showFeatureInfo(layer, properties) {
             content.innerHTML = tableHTML;
             popup.setPosition(evt.coordinate);
             container.classList.add('visible');
+
+            // Calcular el tamaño necesario para el popup
+            var popupContent = document.querySelector('.ol-popup-content');
+            var popupWidth = popupContent.offsetWidth + 20; // Agrega un margen
+            var popupHeight = popupContent.offsetHeight + 20; // Agrega un margen
+
+            // Establecer el tamaño del popup
+            popup.getElement().style.width = popupWidth + 'px';
+            popup.getElement().style.height = popupHeight + 'px';
           }
         });
       } else {
@@ -629,6 +638,7 @@ function showFeatureInfo(layer, properties) {
 showFeatureInfo(MANZ_NUNOATile, 'area,Grilla,Sector,ID_MANZA,PORC_AVAN,INTER_AVAN');
 showFeatureInfo(MANZ_LAVEG_RECOTile, 'ID_MANZA,AREA,NOM_COM,CAMPAÑA,GRILLA');
 showFeatureInfo(MANZ_PENALOLENTile, 'ID_MANZA,AREA');
+
 
 
 //--------------------------------------------------------------------------------------------------------------
