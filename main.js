@@ -4,7 +4,7 @@
 
 var mapView = new ol.View({
   center: ol.proj.fromLonLat([-70.585518, -33.444829]),
-  zoom: 15,
+  zoom: 12,
 });
 
 
@@ -588,6 +588,9 @@ function createTableHTML(props, properties) {
   tableHTML += '</table>';
   return tableHTML;
 }
+
+featureInfoButton.classList.add('clicked');
+featureInfoFlag = true;
 
 function showFeatureInfo(layer, properties) {
   map.on('singleclick', function (evt) {
