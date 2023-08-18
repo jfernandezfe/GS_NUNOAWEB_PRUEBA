@@ -402,6 +402,163 @@ function toggleFullscreen() {
 //programando botton que activa popups con información (featureInfo)  para las capas almacenadas en geoserver    -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
+// var featureInfoButton = document.createElement('button');
+// featureInfoButton.innerHTML = '<img src="resources/images/infopopup.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
+// featureInfoButton.className = 'myButton';
+// featureInfoButton.id = 'featureInfoButton';
+
+// var featureInfoElement = document.createElement('div');
+// featureInfoElement.className = 'featureInfoDiv';
+// featureInfoElement.appendChild(featureInfoButton);
+
+// var featureInfoControl = new ol.control.Control({
+//   element: featureInfoElement
+// })
+
+// var featureInfoFlag = false;
+// featureInfoButton.addEventListener("click", () => {
+//   featureInfoButton.classList.toggle('clicked');
+//   featureInfoFlag = !featureInfoFlag;
+// })
+
+// map.addControl(featureInfoControl);
+
+// map.on('singleclick', function (evt) {
+//   if (featureInfoFlag) {
+//     content.innerHTML = '';
+//     var resolution = map.getView().getResolution();
+
+//     var url = MANZ_NUNOATile.getSource().getFeatureInfoUrl(
+//       evt.coordinate,
+//       resolution,
+//       map.getView().getProjection().getCode(),
+//       {
+//         'INFO_FORMAT': 'application/json',
+//         'propertyName': 'area,Grilla,Sector,ID_MANZA,PORC_AVAN,INTER_AVAN'
+//       }
+//     );
+
+//     //colocando campos en una tabla:
+//     if (url) {
+//       $.getJSON(url, function (data) {
+//         var feature = data.features[0];
+//         if (feature) {
+//           var props = feature.properties;
+//           var tableHTML =
+//             '<table class="popup-table">' +
+//             '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
+//             '<tr><th>Grilla </th><td>' + props.Grilla + '</td></tr>' +
+//             '<tr><th>Sector </th><td>' + props.Sector + '</td></tr>' +
+//             '<tr><th>ID Manza </th><td>' + props.ID_MANZA + '</td></tr>' +
+//             '<tr><th>Porcentaje Avance </th><td>' + props.PORC_AVAN + '</td></tr>' +
+//             '<tr><th>Intervalo </th><td>' + props.INTER_AVAN + '</td></tr>' +
+//             '</table>';
+//           content.innerHTML = tableHTML;
+//           popup.setPosition(evt.coordinate);
+
+
+//           container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+//         }
+//       });
+//     } else {
+//       popup.setPosition(undefined);
+//       container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+//     }
+//   }
+// })
+
+// //creando tabla para capa MANZ_LAVEG_RECOTile
+
+// map.on('singleclick', function (evt) {
+//   if (featureInfoFlag) {
+//     content.innerHTML = '';
+//     var resolution = map.getView().getResolution();
+
+//     var url = MANZ_LAVEG_RECOTile.getSource().getFeatureInfoUrl(
+//       evt.coordinate,
+//       resolution,
+//       map.getView().getProjection().getCode(),
+//       {
+//         'INFO_FORMAT': 'application/json',
+//         'propertyName': 'ID_MANZA,AREA,NOM_COM,CAMPAÑA,GRILLA'
+//       }
+//     );
+
+//     //colocando campos en una tabla:
+//     if (url) {
+//       $.getJSON(url, function (data) {
+//         var feature = data.features[0];
+//         if (feature) {
+//           var props = feature.properties;
+//           var tableHTML =
+//             '<table class="popup-table">' +
+//             '<tr><th>ID Manzana </th><td>' + props.ID_MANZA + '</td></tr>' +
+//             '<tr><th>Área </th><td>' + props.AREA + '</td></tr>' +
+//             '<tr><th>Comuna </th><td>' + props.NOM_COM + '</td></tr>' +
+//             '<tr><th>Campaña </th><td>' + props.CAMPAÑA + '</td></tr>' +
+//             '<tr><th>Grilla </th><td>' + props.GRILLA + '</td></tr>' +
+//             '</table>';
+//           content.innerHTML = tableHTML;
+//           popup.setPosition(evt.coordinate);
+
+
+//           container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+//         }
+//       });
+//     } else {
+//       popup.setPosition(undefined);
+//       container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+//     }
+//   }
+// })
+
+// //creando capa para capa MANZ_PENALOLENTile
+
+// map.on('singleclick', function (evt) {
+//   if (featureInfoFlag) {
+//     content.innerHTML = '';
+//     var resolution = map.getView().getResolution();
+
+//     var url = MANZ_PENALOLENTile.getSource().getFeatureInfoUrl(
+//       evt.coordinate,
+//       resolution,
+//       map.getView().getProjection().getCode(),
+//       {
+//         'INFO_FORMAT': 'application/json',
+//         'propertyName': 'ID_MANZA,AREA'
+//       }
+//     );
+
+//     //colocando campos en una tabla:
+//     if (url) {
+//       $.getJSON(url, function (data) {
+//         var feature = data.features[0];
+//         if (feature) {
+//           var props = feature.properties;
+//           var tableHTML =
+//             '<table class="popup-table">' +
+//             '<tr><th>ID Manzana </th><td>' + props.ID_MANZA + '</td></tr>' +
+//             '<tr><th>Área </th><td>' + props.AREA + '</td></tr>' +
+//             '</table>';
+//           content.innerHTML = tableHTML;
+//           popup.setPosition(evt.coordinate);
+
+
+//           container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
+
+//         }
+//       });
+//     } else {
+//       popup.setPosition(undefined);
+//       container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
+//     }
+//   }
+// })
+
+//version chat gpt:
+
 var featureInfoButton = document.createElement('button');
 featureInfoButton.innerHTML = '<img src="resources/images/infopopup.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 featureInfoButton.className = 'myButton';
@@ -423,139 +580,56 @@ featureInfoButton.addEventListener("click", () => {
 
 map.addControl(featureInfoControl);
 
-map.on('singleclick', function (evt) {
-  if (featureInfoFlag) {
-    content.innerHTML = '';
-    var resolution = map.getView().getResolution();
+function createTableHTML(props, properties) {
+  var tableHTML = '<table class="popup-table">';
+  properties.split(',').forEach(function (propName) {
+    tableHTML += '<tr><th>' + propName + '</th><td>' + props[propName] + '</td></tr>';
+  });
+  tableHTML += '</table>';
+  return tableHTML;
+}
 
-    var url = MANZ_NUNOATile.getSource().getFeatureInfoUrl(
-      evt.coordinate,
-      resolution,
-      map.getView().getProjection().getCode(),
-      {
-        'INFO_FORMAT': 'application/json',
-        'propertyName': 'area,Grilla,Sector,ID_MANZA,PORC_AVAN,INTER_AVAN'
-      }
-    );
+function showFeatureInfo(layer, properties) {
+  map.on('singleclick', function (evt) {
+    if (featureInfoFlag) {
+      content.innerHTML = '';
+      var resolution = map.getView().getResolution();
 
-    //colocando campos en una tabla:
-    if (url) {
-      $.getJSON(url, function (data) {
-        var feature = data.features[0];
-        if (feature) {
-          var props = feature.properties;
-          var tableHTML =
-            '<table class="popup-table">' +
-            '<tr><th>Área </th><td>' + props.area + '</td></tr>' +
-            '<tr><th>Grilla </th><td>' + props.Grilla + '</td></tr>' +
-            '<tr><th>Sector </th><td>' + props.Sector + '</td></tr>' +
-            '<tr><th>ID Manza </th><td>' + props.ID_MANZA + '</td></tr>' +
-            '<tr><th>Porcentaje Avance </th><td>' + props.PORC_AVAN + '</td></tr>' +
-            '<tr><th>Intervalo </th><td>' + props.INTER_AVAN + '</td></tr>' +
-            '</table>';
-          content.innerHTML = tableHTML;
-          popup.setPosition(evt.coordinate);
-
-
-          container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
-
+      var url = layer.getSource().getFeatureInfoUrl(
+        evt.coordinate,
+        resolution,
+        map.getView().getProjection().getCode(),
+        {
+          'INFO_FORMAT': 'application/json',
+          'propertyName': properties
         }
-      });
-    } else {
-      popup.setPosition(undefined);
-      container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
-    }
-  }
-})
+      );
 
-//creando tabla para capa MANZ_LAVEG_RECOTile
+      if (url) {
+        $.getJSON(url, function (data) {
+          var feature = data.features[0];
+          if (feature) {
+            var props = feature.properties;
+            var tableHTML = createTableHTML(props, properties);
 
-map.on('singleclick', function (evt) {
-  if (featureInfoFlag) {
-    content.innerHTML = '';
-    var resolution = map.getView().getResolution();
-
-    var url = MANZ_LAVEG_RECOTile.getSource().getFeatureInfoUrl(
-      evt.coordinate,
-      resolution,
-      map.getView().getProjection().getCode(),
-      {
-        'INFO_FORMAT': 'application/json',
-        'propertyName': 'ID_MANZA,AREA,NOM_COM,CAMPAÑA,GRILLA'
+            content.innerHTML = tableHTML;
+            popup.setPosition(evt.coordinate);
+            container.classList.add('visible');
+          }
+        });
+      } else {
+        popup.setPosition(undefined);
+        container.classList.remove('visible');
       }
-    );
-
-    //colocando campos en una tabla:
-    if (url) {
-      $.getJSON(url, function (data) {
-        var feature = data.features[0];
-        if (feature) {
-          var props = feature.properties;
-          var tableHTML =
-            '<table class="popup-table">' +
-            '<tr><th>ID Manzana </th><td>' + props.ID_MANZA + '</td></tr>' +
-            '<tr><th>Área </th><td>' + props.AREA + '</td></tr>' +
-            '<tr><th>Comuna </th><td>' + props.NOM_COM + '</td></tr>' +
-            '<tr><th>Campaña </th><td>' + props.CAMPAÑA + '</td></tr>' +
-            '<tr><th>Grilla </th><td>' + props.GRILLA + '</td></tr>' +
-            '</table>';
-          content.innerHTML = tableHTML;
-          popup.setPosition(evt.coordinate);
-
-
-          container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
-
-        }
-      });
-    } else {
-      popup.setPosition(undefined);
-      container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
     }
-  }
-})
+  });
+}
 
-//creando capa para capa MANZ_PENALOLENTile
+// Llamada a la función para cada capa con sus propiedades respectivas
+showFeatureInfo(MANZ_NUNOATile, 'area,Grilla,Sector,ID_MANZA,PORC_AVAN,INTER_AVAN');
+showFeatureInfo(MANZ_LAVEG_RECOTile, 'ID_MANZA,AREA,NOM_COM,CAMPAÑA,GRILLA');
+showFeatureInfo(MANZ_PENALOLENTile, 'ID_MANZA,AREA');
 
-map.on('singleclick', function (evt) {
-  if (featureInfoFlag) {
-    content.innerHTML = '';
-    var resolution = map.getView().getResolution();
-
-    var url = MANZ_PENALOLENTile.getSource().getFeatureInfoUrl(
-      evt.coordinate,
-      resolution,
-      map.getView().getProjection().getCode(),
-      {
-        'INFO_FORMAT': 'application/json',
-        'propertyName': 'ID_MANZA,AREA'
-      }
-    );
-
-    //colocando campos en una tabla:
-    if (url) {
-      $.getJSON(url, function (data) {
-        var feature = data.features[0];
-        if (feature) {
-          var props = feature.properties;
-          var tableHTML =
-            '<table class="popup-table">' +
-            '<tr><th>ID Manzana </th><td>' + props.ID_MANZA + '</td></tr>' +
-            '<tr><th>Área </th><td>' + props.AREA + '</td></tr>' +
-            '</table>';
-          content.innerHTML = tableHTML;
-          popup.setPosition(evt.coordinate);
-
-
-          container.classList.add('visible'); // Agregar la clase 'visible' para activar la animación
-
-        }
-      });
-    } else {
-      popup.setPosition(undefined);
-      container.classList.remove('visible'); // Remover la clase 'visible' para ocultar el popup
-    }
-  }
-})
 
 //--------------------------------------------------------------------------------------------------------------
 //programando boton que activa Área de longitud y control de medidas.(length area and measure control -----------------------------------------------------------------
