@@ -249,35 +249,6 @@ closer.onclick = function () {
 //programando home button         -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
-//Activando boton con comandos "alt + H"
-// Añade un event listener para detectar las teclas presionadas
-// document.addEventListener('keydown', (event) => {
-//   // Verifica si se presionó "Alt" y "H" al mismo tiempo
-//   if (event.altKey && event.key === 'h') {
-//     // Activa la función "Home"
-//     location.href = "index.html";
-//   }
-// });
-
-// var homeButton = document.createElement('button');
-// homeButton.innerHTML = '<img src="resources/images/home-2.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
-// homeButton.className = 'myButton';
-// homeButton.id = 'homeButton';
-
-// var homeElement = document.createElement('div');
-// homeElement.className = 'homeButtonDiv';
-// homeElement.appendChild(homeButton);
-
-// var homeControl = new ol.control.Control({
-//   element: homeElement
-// })
-
-// homeButton.addEventListener("click", () => {
-//   location.href = "index.html";
-// })
-
-// map.addControl(homeControl);
-
 // Añade un event listener para detectar las teclas presionadas
 document.addEventListener('keydown', (event) => {
   // Verifica si se presionó "Alt" y "H" al mismo tiempo
