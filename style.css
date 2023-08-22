@@ -510,3 +510,19 @@ attQryTable th{
   
     /* Los estilos de la attListDiv son los mismos que en la responsividad para tamaños pequeños */
   }
+
+  /*Encabezado Estático en la Tabla de Campos Filtrados: */
+
+  #attQryTable th {
+  position: sticky;
+  top: 0;
+  background-color: #f2f2f2;
+  z-index: 2;
+}
+
+#attListDiv {
+    /* ... tus otros estilos ... */
+    max-height: 250px; /* Ajusta la altura máxima según tu diseño */
+    overflow-y: auto;
+}
+  
