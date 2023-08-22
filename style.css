@@ -471,3 +471,42 @@ attQryTable th{
 /*font-weight: bolder; background-color: rgba(225, 225, 225);} */
 {background-color: lightgrey;}
 
+
+/* Responsividad para dispositivos Android */
+
+/* Tamaños de pantalla pequeños */
+@media only screen and (max-width: 480px) {
+    .attQueryDiv {
+      width: 80%;
+      margin: 10px auto auto 10px;
+    }
+  
+    .attListDiv {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-height: 50%; /* Puedes ajustar la altura máxima según sea necesario */
+      margin: 0 auto;
+    }
+  }
+  
+  /* Tamaños de pantalla medianos */
+  @media only screen and (max-width: 768px) {
+    .attQueryDiv {
+      width: 70%;
+      margin: 70px auto auto 45px;
+    }
+  
+    /* Los estilos de la attListDiv son los mismos que en la responsividad para tamaños pequeños */
+  }
+  
+  /* Tamaños de pantalla grandes */
+  @media only screen and (max-width: 1024px) {
+    .attQueryDiv {
+      width: 60%;
+      margin: 70px auto auto 45px;
+    }
+  
+    /* Los estilos de la attListDiv son los mismos que en la responsividad para tamaños pequeños */
+  }
