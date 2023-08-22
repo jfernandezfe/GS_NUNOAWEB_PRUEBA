@@ -949,9 +949,15 @@ function addMapLayerList() {
 
 // ----------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
-
+// Código para minimizar/expandir la ventana de consulta
+document.getElementById("minimizeButton").addEventListener("click", function () {
+  var attQueryDiv = document.getElementById("attQueryDiv");
+  attQueryDiv.classList.toggle("minimized");
+});
 
 $(function () {
+
+  
   document.getElementById("selectLayer").onchange = function () {
     var select = document.getElementById("selectAttribute");
     while (select.options.length > 0) {

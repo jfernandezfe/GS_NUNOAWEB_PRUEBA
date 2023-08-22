@@ -37,11 +37,15 @@
     
     </div>
 
-    <!-- Desplegando ventana para funciones query(Consulta de atributos ) -->
+    
+    <!-- Desplegando ventana para funciones query (Consulta de atributos) -->
     <div class="attQueryDiv" id="attQueryDiv">
         <div class="headerDiv" id="headerDiv">
-            <label for="">Consulta de Atributos </label>
+        <label for="">Consulta de Atributos </label>
+        <!-- Botón para minimizar la ventana -->
+        <button id="minimizeButton" class="minimizeButton">Min/Max</button>
         </div><br>
+        <!-- Resto de los elementos de la ventana de consulta... -->
         <label for="">Seleccionar Capa</label>
         <select name="selectLayer" id="selectLayer">            
         </select><br><br>
@@ -60,7 +64,9 @@
 
         <button type="button" id="attQryRun" class="attQryRun" onclick="attributeQuery()">Run</button>
     </div>
+
     <div class="attListDiv" id="attListDiv"></div>
+
     
     
 

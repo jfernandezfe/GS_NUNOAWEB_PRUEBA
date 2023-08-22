@@ -455,7 +455,7 @@ border: 1px solid black;
 
 #attQryTable, td , th {
     padding: 0px 5px 0px 5px;
-    border: 1px solid rgb(207, 207, 207);
+    border: 1px solid rgba(255, 255, 255, 0.747);
 }
 
 attQryTable th{
@@ -497,23 +497,33 @@ attQryTable th{
       width: 70%;
       margin: 70px auto auto 45px;
     }
-  
+    
+    .attListDiv {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-height: 50%; /* Puedes ajustar la altura máxima según sea necesario */
+        margin: 0 auto;
+      }
     /* Los estilos de la attListDiv son los mismos que en la responsividad para tamaños pequeños */
   }
   
   /* Tamaños de pantalla grandes */
-  @media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1024px) {
     .attQueryDiv {
-      width: 25%;
+      width: 60%;
       margin: 70px auto auto 45px;
     }
+
+    
   
     /* Los estilos de la attListDiv son los mismos que en la responsividad para tamaños pequeños */
-  }
+}
 
-  /*Encabezado Estático en la Tabla de Campos Filtrados: */
+/*Encabezado Estático en la Tabla de Campos Filtrados: */
 
-  #attQryTable th {
+#attQryTable th {
     position: sticky;
     top: 0;
     background-color: midnightblue;
@@ -527,3 +537,9 @@ attQryTable th{
     overflow-y: auto;
 }
   
+/* CSS para minimizar la ventana */
+.attQueryDiv.minimized {
+    width: 250px; /* Ajusta este valor según tu diseño */
+    height: 35px; /* Ajusta este valor según tu diseño */
+    overflow: hidden;
+}
