@@ -455,7 +455,7 @@ border: 1px solid black;
 
 #attQryTable, td , th {
     padding: 0px 5px 0px 5px;
-    border: 1px solid black;
+    border: 1px solid rgb(207, 207, 207);
 }
 
 attQryTable th{
@@ -504,7 +504,7 @@ attQryTable th{
   /* Tamaños de pantalla grandes */
   @media only screen and (max-width: 1024px) {
     .attQueryDiv {
-      width: 60%;
+      width: 25%;
       margin: 70px auto auto 45px;
     }
   
@@ -514,10 +514,11 @@ attQryTable th{
   /*Encabezado Estático en la Tabla de Campos Filtrados: */
 
   #attQryTable th {
-  position: sticky;
-  top: 0;
-  background-color: #f2f2f2;
-  z-index: 2;
+    position: sticky;
+    top: 0;
+    background-color: midnightblue;
+    z-index: 2;
+    color: white;
 }
 
 #attListDiv {
