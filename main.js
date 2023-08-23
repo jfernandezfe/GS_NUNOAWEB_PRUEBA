@@ -374,6 +374,7 @@ function toggleFullscreen() {
 //programando botton que activa popups con información (featureInfo)  para las capas almacenadas en geoserver    -----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 
+
 var featureInfoButton = document.createElement('button');
 featureInfoButton.innerHTML = '<img src="resources/images/infopopup.svg" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
 featureInfoButton.className = 'myButton';
@@ -386,6 +387,28 @@ featureInfoElement.appendChild(featureInfoButton);
 var featureInfoControl = new ol.control.Control({
   element: featureInfoElement
 })
+
+// Agregar burbuja al botón
+var featureInfoTooltip = document.createElement('div');
+featureInfoTooltip.className = 'tooltip';
+featureInfoTooltip.textContent = 'Info Popup (Alt + i)';
+document.body.appendChild(featureInfoTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+featureInfoButton.addEventListener('mouseover', () => {
+  featureInfoTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+featureInfoButton.addEventListener('mouseout', () => {
+  featureInfoTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+featureInfoButton.addEventListener('mousemove', (event) => {
+  featureInfoTooltip.style.left = event.clientX + 50 + 'px';
+  featureInfoTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
 
 var featureInfoFlag = false;
 featureInfoButton.addEventListener("click", () => {
@@ -406,6 +429,16 @@ function createTableHTML(props, properties) {
 
 featureInfoButton.classList.add('clicked');
 featureInfoFlag = true;
+
+
+// Agrega un evento de teclado al documento para detectar "Alt + I"
+document.addEventListener("keydown", function(event) {
+  if (event.altKey && event.key === "i") {
+    // Cambia el estado de featureInfoFlag al contrario
+    featureInfoFlag = !featureInfoFlag;
+    featureInfoButton.classList.toggle('clicked', featureInfoFlag);
+  }
+});
 
 function showFeatureInfo(layer, properties) {
   map.on('singleclick', function (evt) {
