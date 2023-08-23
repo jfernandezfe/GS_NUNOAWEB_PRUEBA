@@ -430,7 +430,6 @@ function createTableHTML(props, properties) {
 featureInfoButton.classList.add('clicked');
 featureInfoFlag = true;
 
-
 // Agrega un evento de teclado al documento para detectar "Alt + I"
 document.addEventListener("keydown", function(event) {
   if (event.altKey && event.key === "i") {
@@ -509,6 +508,29 @@ var lengthControl = new ol.control.Control({
   element: lengthElement
 })
 
+// Agregar burbuja al botón
+var lengthTooltip = document.createElement('div');
+lengthTooltip.className = 'tooltip';
+lengthTooltip.textContent = 'Medir Longitud (Alt + L)';
+document.body.appendChild(lengthTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+lengthButton.addEventListener('mouseover', () => {
+  lengthTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+lengthButton.addEventListener('mouseout', () => {
+  lengthTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+lengthButton.addEventListener('mousemove', (event) => {
+  lengthTooltip.style.left = event.clientX + 65 + 'px';
+  lengthTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
+
+
 var lengthFlag = false;
 lengthButton.addEventListener("click", () => {
   //disableOtherInteraction('lengthButton');
@@ -528,7 +550,7 @@ lengthButton.addEventListener("click", () => {
 
 map.addControl(lengthControl);
 
-//creando btton de area...
+//creando boton de area...
 
 var areaButton = document.createElement('button');
 areaButton.innerHTML = '<img src="resources/images/area.svg" alt="" style="width:30px;height:30px;filter:brightness(0) invert(1); vertical-align:middle"></img>';
@@ -542,6 +564,28 @@ areaElement.appendChild(areaButton);
 var areaControl = new ol.control.Control({
   element: areaElement
 })
+
+// Agregar burbuja al botón
+var areaTooltip = document.createElement('div');
+areaTooltip.className = 'tooltip';
+areaTooltip.textContent = 'Medir Área (Alt + A)';
+document.body.appendChild(areaTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+areaButton.addEventListener('mouseover', () => {
+  areaTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+areaButton.addEventListener('mouseout', () => {
+  areaTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+areaButton.addEventListener('mousemove', (event) => {
+  areaTooltip.style.left = event.clientX + 55 + 'px';
+  areaTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
 
 var areaFlag = false;
 areaButton.addEventListener("click", () => {
@@ -560,8 +604,22 @@ areaButton.addEventListener("click", () => {
     // while (elements.area > 0) elements[0].remove(); //se toma el componente de length???
   }
 })
-
 map.addControl(areaControl);
+
+
+
+// Agrega un evento de teclado al documento para detectar "Alt + L" y "Alt + A"
+document.addEventListener("keydown", function(event) {
+  if (event.altKey) {
+    if (event.key === "l") {
+      // Activa/desactiva el botón de medición de longitud
+      lengthButton.click();
+    } else if (event.key === "a") {
+      // Activa/desactiva el botón de medición de área
+      areaButton.click();
+    }
+  }
+});
 
 
 /**
