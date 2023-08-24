@@ -606,8 +606,6 @@ areaButton.addEventListener("click", () => {
 })
 map.addControl(areaControl);
 
-
-
 // Agrega un evento de teclado al documento para detectar "Alt + L" y "Alt + A"
 document.addEventListener("keydown", function(event) {
   if (event.altKey) {
@@ -916,6 +914,28 @@ ziButton.addEventListener("click", () => {
   document.getElementById("map").style.cursor = ziButton.classList.contains('clicked') ? "zoom-in" : "default";
 });
 
+// Agregar burbuja al botón
+var ziTooltip = document.createElement('div');
+ziTooltip.className = 'tooltip';
+ziTooltip.textContent = 'Zoom In (Alt + Z)';
+document.body.appendChild(ziTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+ziButton.addEventListener('mouseover', () => {
+  ziTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+ziButton.addEventListener('mouseout', () => {
+  ziTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+ziButton.addEventListener('mousemove', (event) => {
+  ziTooltip.style.left = event.clientX + 45 + 'px';
+  ziTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
+
 
 //ZOOM OUT:
 var zoomOutInteraction = new ol.interaction.DragBox();
@@ -946,6 +966,28 @@ map.addControl(zoControl);
 zoButton.addEventListener("click", () => {
   handleZoomButtonClick(zoButton, zoomOutInteraction);
   document.getElementById("map").style.cursor = zoButton.classList.contains('clicked') ? "zoom-out" : "default";
+});
+
+// Agregar burbuja al botón
+var zoTooltip = document.createElement('div');
+zoTooltip.className = 'tooltip';
+zoTooltip.textContent = 'Zoom Out (Alt + X)';
+document.body.appendChild(zoTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+zoButton.addEventListener('mouseover', () => {
+  zoTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+zoButton.addEventListener('mouseout', () => {
+  zoTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+zoButton.addEventListener('mousemove', (event) => {
+  zoTooltip.style.left = event.clientX + 45 + 'px';
+  zoTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
 });
 
 
@@ -1038,7 +1080,7 @@ function addMapLayerList() {
   });
 }
 
-// ----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
 // Código para minimizar/expandir la ventana de consulta
 document.getElementById("minimizeButton").addEventListener("click", function () {
