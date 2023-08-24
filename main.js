@@ -986,7 +986,7 @@ zoButton.addEventListener('mouseout', () => {
 
 // Evento para mover la burbuja con el mouse sobre el botón
 zoButton.addEventListener('mousemove', (event) => {
-  zoTooltip.style.left = event.clientX + 45 + 'px';
+  zoTooltip.style.left = event.clientX + 50 + 'px';
   zoTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
 });
 
@@ -1012,8 +1012,7 @@ var qryControl = new ol.control.Control({
   element: qryElement
 });
 
-// Hasta aquí bien...
-//--------------------------------------------------------------------------------------------
+
 var qryFlag = false;
 qryButton.addEventListener("click", () => {
   qryButton.classList.toggle('clicked');
@@ -1053,10 +1052,29 @@ qryButton.addEventListener("click", () => {
   }
 
 });
-
 map.addControl(qryControl);
-// Hasta aquí todo en orden... ------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------
+
+// Agregar burbuja al botón
+var qryTooltip = document.createElement('div');
+qryTooltip.className = 'tooltip';
+qryTooltip.textContent = 'Filtro de Busqueda (Alt + Q)';
+document.body.appendChild(qryTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+qryButton.addEventListener('mouseover', () => {
+  qryTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+qryutton.addEventListener('mouseout', () => {
+  qryTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+qryButton.addEventListener('mousemove', (event) => {
+  qryTooltip.style.left = event.clientX + 50 + 'px';
+  qryTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
 
 // Versión chat GPT funcional que muestra toda la lista de capas:
 function addMapLayerList() {
