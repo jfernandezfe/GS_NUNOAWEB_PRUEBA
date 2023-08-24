@@ -861,7 +861,6 @@ var formatArea = function (polygon) {
 // Función de zoom in y zoom out mas restricciones...
 //versión con restricciones hecha por chat gpt:
 
-
 // Función para desactivar el botón contrario
 function deactivateButton(button) {
   if (button === ziButton) {
@@ -990,6 +989,23 @@ zoButton.addEventListener('mousemove', (event) => {
   zoTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
 });
 
+//Añadiendo comandos para activar botones de zoom in y out:
+
+// Evento de teclado para activar Zoom In (Alt + Z)
+document.addEventListener("keydown", function (event) {
+  if (event.altKey && event.key === "z") {
+    ziButton.click();
+  }
+});
+
+// Evento de teclado para activar Zoom Out (Alt + X)
+document.addEventListener("keydown", function (event) {
+  if (event.altKey && event.key === "x") {
+    zoButton.click();
+  }
+});
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Segunda versión de chat gpt:
@@ -1007,6 +1023,7 @@ qryButton.id = 'qryButton';
 var qryElement = document.createElement('div');
 qryElement.className = 'myButtonDiv';
 qryElement.appendChild(qryButton);
+
 
 var qryControl = new ol.control.Control({
   element: qryElement
@@ -1066,19 +1083,28 @@ qryButton.addEventListener('mouseover', () => {
 });
 
 // Evento para ocultar la burbuja cuando el mouse se retira del botón
-qryutton.addEventListener('mouseout', () => {
+qryButton.addEventListener('mouseout', () => {
   qryTooltip.style.display = 'none';
 });
 
 // Evento para mover la burbuja con el mouse sobre el botón
 qryButton.addEventListener('mousemove', (event) => {
-  qryTooltip.style.left = event.clientX + 50 + 'px';
+  qryTooltip.style.left = event.clientX + 75 + 'px';
   qryTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
 });
+
+//Añadiendo funcion que activa comando de query selector Alt +Q
+document.addEventListener("keydown", function (event) {
+  if (event.altKey && event.key === "q") {
+    qryButton.click();
+  }
+});
+
 
 // Versión chat GPT funcional que muestra toda la lista de capas:
 function addMapLayerList() {
   $(document).ready(function () {
+
     $.ajax({
       type: "GET",
       url: "https://sagcartogob.com/geoserver/wfs?request=getCapabilities",
@@ -1422,6 +1448,8 @@ function newaddRowHandlers(url) {
     );
   });
 }
+
+
 
 
 // Codigo revisado y corregido completamente...
