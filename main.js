@@ -1098,7 +1098,7 @@ document.addEventListener("keydown", function (event) {
   if (event.altKey && event.key === "q") {
     qryButton.click();
   }
-});
+});0
 
 
 // Versión chat GPT funcional que muestra toda la lista de capas:
