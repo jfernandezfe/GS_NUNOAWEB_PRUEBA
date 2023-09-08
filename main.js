@@ -1449,9 +1449,6 @@ function newaddRowHandlers(url) {
   });
 }
 
-
-
-
 // Codigo revisado y corregido completamente...
 
 // End attribute query...
@@ -1459,4 +1456,55 @@ function newaddRowHandlers(url) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Creando función para edicion de capas y añadimiento de puntos con observaciones:
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////Añadiendo función para exportación de mapas/captura de pantalla en formato pdf ////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// botton(pdfButton) para exportacion pdf de la captura de pantalla:
+
+var pdfButton = document.createElement('button');
+pdfButton.innerHTML = '<img src="resources/images/pdf.png" alt="" style="width:20px;height:20px;filter:brightness(0) invert(1); vertical-align:middle">';
+pdfButton.className = 'myButton';
+pdfButton.id ='pdfButton';
+
+var pdfElement = document.createElement('div');
+pdfElement.className = 'myButtonDiv';
+pdfElement.appendChild(pdfButton); 
+
+var pdfControl = new ol.control.Control({
+  element : pdfElement 
+});
+
+// Agregar burbuja al botón
+var pdfTooltip = document.createElement('div');
+pdfTooltip.className = 'tooltip';
+pdfTooltip.textContent = 'Exportar Mapa PDF (Proximamente!)';
+document.body.appendChild(pdfTooltip); // Agregar la burbuja al cuerpo del documento
+
+// Evento para mostrar la burbuja cuando se coloca el mouse sobre el botón
+pdfButton.addEventListener('mouseover', () => {
+  pdfTooltip.style.display = 'block';
+});
+
+// Evento para ocultar la burbuja cuando el mouse se retira del botón
+pdfButton.addEventListener('mouseout', () => {
+  pdfTooltip.style.display = 'none';
+});
+
+// Evento para mover la burbuja con el mouse sobre el botón
+pdfButton.addEventListener('mousemove', (event) => {
+  pdfTooltip.style.left = event.clientX + 100 + 'px';
+  pdfTooltip.style.top = event.clientY - 20 + 'px'; // Ajustar la posición vertical según sea necesario
+});
+
+//Añadiendo funcion que activa comando para exportación PDF
+// document.addEventListener("keydown", function (event) {
+//   if (event.altKey && event.key === "q") <--- aqui hay que cambiar el comando por una tecla distinta....
+//     pdfButtonButton.click();
+//   }
+// });
+
+
+map.addControl(pdfControl);
 
