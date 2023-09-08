@@ -485,7 +485,7 @@ function showFeatureInfo(layer, properties) {
 }
 
 // Llamada a la función para cada capa con sus propiedades respectivas
-showFeatureInfo(MANZ_NUNOATile, 'area,Grilla,Sector,ID_MANZA,PORC_AVAN,INTER_AVAN');
+showFeatureInfo(MANZ_NUNOATile, 'area,Grilla,Sector,ID_MANZA');
 showFeatureInfo(MANZ_LAVEG_RECOTile, 'ID_MANZA,AREA,NOM_COM,CAMPAÑA,GRILLA');
 showFeatureInfo(MANZ_PENALOLENTile, 'ID_MANZA,AREA');
 
